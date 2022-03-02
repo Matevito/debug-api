@@ -9,5 +9,7 @@ const commentSchema = mongoose.Schema({
     // screenshot
 });
 
+//todo: return date formatted.
+
 const Comment = mongoose.model("Comment", commentSchema);
 module.exports = Comment;

@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
     username: { type: String, required: true, mingLength: 5, maxLength: 25},
     email: { type: String, required: true, mingLength: 5},
     password: { type: String, required: true, minLength: 5, maxLength: 250},
-    role: { type: String, required:true, enum:["Developer", "Submiter", "Admin"]},
+    role: { type: String, required: true, enum:["Developer", "Submiter", "Admin"]},
 });
 
 // HANDLING CRYPTED PASSWORDS 
