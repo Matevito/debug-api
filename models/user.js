@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs")
 
+//todo: .env reference
+
 const userSchema = mongoose.Schema({
     username: { type: String, required: true, mingLength: 5, maxLength: 25},
     email: { type: String, required: true, mingLength: 5},
