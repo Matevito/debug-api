@@ -21,7 +21,9 @@ const issueSchema = mongoose.Schema({
         enum: ["Bugg-Error", "Feature req", "Documentation req", ]
     },
     date: { type: Date, default: DateTime.now() },
-    //screenshots,
+    screenshotNames: [{
+        type: Number
+    }],
     comments: {
         type: mongoose.SchemaType.ObjectId,
         ref: "Comment"
@@ -31,6 +33,8 @@ const issueSchema = mongoose.Schema({
         ref: "ChangeLog",
     }]
 });
+
+// format date
 
 const Issue = mongoose.model("Issue", issueSchema);
 module.exports = Issue;

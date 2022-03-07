@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const mongoose = require("mongoose");
-
 const projectSchema = mongoose.Schema({
     title: { type: String, required: true, minLength: 5, maxLength: 100},
     description: { type: String, required: true, MaxLength: 500},
