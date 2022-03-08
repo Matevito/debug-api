@@ -11,6 +11,7 @@ let port = process.env.PORT || 3000;
 const app = express();
 
 // 3. connect to mongoDB
+require("./dependencies/mongoConfig")
 
 // 4. set-up app routes
 
