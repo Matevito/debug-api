@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') require("dotenv").config();
 let port = process.env.PORT || 3000;
 
 // 1. routes
+const apiv1router = require("./routes/apiv1");
 
 // 2. create express app
 const app = express();
@@ -14,6 +15,7 @@ const app = express();
 require("./dependencies/mongoConfig")
 
 // 4. set-up app routes
+app.use("/apiv1", apiv1router);
 
 // 5. error handling
 
