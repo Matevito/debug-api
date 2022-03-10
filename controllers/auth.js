@@ -81,7 +81,7 @@ exports.login_post = [
                 error: "User not found"
             })
         }
-        
+
         // 3. check parsed password validity
         const validPassword = await user.checkPassword(req.body.password);
         if (!validPassword) {
@@ -91,9 +91,20 @@ exports.login_post = [
         }
 
         // 4. send jwt token to client
+        const userData = {
+            id: user._id,
+            username: user.username,
+            role: user.role
+        }
+
+        const secret = process.env.TOKEN_SECRET;
+        const opts = { expiresIn: "15d" };
+        const token = jwt.sign(userData, secret, opts);
+
         res.json({
-            msg: "todo...",
-            data: user
+            error: null,
+            msg: "validation sucessfull",
+            token
         })
     }
 ]
