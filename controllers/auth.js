@@ -24,7 +24,7 @@ exports.signin_post = [
                 message: "error with parsed form data",
                 error: errors.array()
             })
-        };s
+        };
 
         // 2. check if user already exist
         const usernameExist = await User.findOne({ username: req.body.username });
@@ -43,15 +43,14 @@ exports.signin_post = [
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
+            // developer as default value
             role: "Developer"
         });
-
         try {
-            //todo: save user
+            await new_user.save();
             res.json({ 
                 error: null,
-                message: "User created succesfully",
-                data: new_user
+                msg: "User created succesfully",
             })
         } catch (err) {
             res.status(400).json({ err })

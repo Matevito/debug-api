@@ -5,7 +5,7 @@ const router = express.Router();
 const authCont = require("../controllers/auth");
 
 // 1. auth routes
-router.post("/sign-in");
+router.post("/sign-in", authCont.signin_post);
 router.post("/log-in", authCont.login_post);
 router.get("/whoami");
 
@@ -22,5 +22,7 @@ router.post("/demo/admin");
 // 3.1 Comments routes
 
 // todo: other routers
+
+// 4. notifications...
 
 module.exports = router
