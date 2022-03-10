@@ -21,7 +21,7 @@ exports.signin_post = [
         if (!errors.isEmpty()) {
             // if there are errors
             return res.status(400).json({
-                message: "error with parsed form data",
+                msg: "error with parsed form data",
                 error: errors.array()
             })
         };
@@ -58,6 +58,21 @@ exports.signin_post = [
     }
 ]
 
-exports.login_post = async (req, res) => {
-    res.send("todo:")
-};
+exports.login_post = [
+    body("email", "Valid email is required").trim().isEmail().normalizeEmail().escape(),
+    body("password", "Password is required").trim().isLength({ min: 5 }).escape(),
+    async (req, res) => {
+        // 1. check validity of data
+        let errors = validationResult(req);
+        if (!errors.isEmpty()){
+            return res.status(400).json({
+                msg: "error with parsed data",
+                error: errors.array()
+            })
+        }
+
+        res.json({
+            msg: "todo..."
+        })
+    }
+]
