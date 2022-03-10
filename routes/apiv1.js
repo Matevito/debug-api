@@ -23,6 +23,9 @@ router.post("/demo/admin");
 
 // todo: other routers
 
-// 4. notifications...
+// 4. User routes
+
+// 5. notifications...
+
 
 module.exports = router

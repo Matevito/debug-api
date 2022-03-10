@@ -59,7 +59,7 @@ exports.signin_post = [
 ]
 
 exports.login_post = [
-    body("email", "Valid email is required").trim().isEmail().normalizeEmail().escape(),
+    body("username", "username or email is required").trim().not().isEmpty().escape(),
     body("password", "Password is required").trim().isLength({ min: 5 }).escape(),
     async (req, res) => {
         // 1. check validity of data
@@ -71,8 +71,29 @@ exports.login_post = [
             })
         }
 
+        // 2. check if user exist
+        let user = await User.findOne({ username: req.body.username })
+        if (!user) {
+            user = await User.findOne({ email: req.body.username })
+        };
+        if (!user) {
+            return res.status(400).json({
+                error: "User not found"
+            })
+        }
+        
+        // 3. check parsed password validity
+        const validPassword = await user.checkPassword(req.body.password);
+        if (!validPassword) {
+            return res.status(400).json({
+                error: "Invalid password"
+            })
+        }
+
+        // 4. send jwt token to client
         res.json({
-            msg: "todo..."
+            msg: "todo...",
+            data: user
         })
     }
 ]
