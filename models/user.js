@@ -4,8 +4,8 @@ const bcrypt = require("bcryptjs")
 //todo: .env reference
 
 const userSchema = mongoose.Schema({
-    username: { type: String, required: true, mingLength: 5, maxLength: 25},
-    email: { type: String, required: true, mingLength: 5},
+    username: { type: String, required: true },
+    email: { type: String, required: true },
     password: { type: String, required: true, minLength: 5, maxLength: 250},
     role: { 
         type: String,

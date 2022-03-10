@@ -3,9 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 const authCont = require("../controllers/auth");
+
 // 1. auth routes
 router.post("/sign-in");
-router.post("/log-in");
+router.post("/log-in", authCont.login_post);
 router.get("/whoami");
 
 // 1.5 demo auth routes
