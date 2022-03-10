@@ -10,6 +10,8 @@ const apiv1router = require("./routes/apiv1");
 
 // 2. create express app
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // 3. connect to mongoDB
 require("./dependencies/mongoConfig")
