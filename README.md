@@ -1,12 +1,12 @@
 Issue tracker API
 ...
-API-DEBUG is a rest api that can hadnle the basic functions of the backen of an issue tracker app (ticket siystem.., call it whatever you want). It can be used in small dev teams to develop and handle a particular proyect. The idea behind building it was the get to know this common tool used oftenly in real teams of software developing.
+API-DEBUG is a rest api that can hadnle the basic functions of the backen of an issue tracker app (ticket siystem.., call it whatever you want). It can be used in small dev teams to develop and handle a particular project. The idea behind building it was the get to know this common tool used oftenly in real teams of software developing.
 
 It is built on express and uses mongoDB as a database. Jwt tokens are uses as an authentication sistem and handles all the basic CRUD operations.
 
 Models...
 - User()
-- Proyect()
+- Project()
 - Issue()
 
 complementary models.
@@ -46,14 +46,14 @@ The root of the app routes is "/apiv1/". Hav in mind that all of the following r
 
 2. Protect routes
 
-    - POST "/proyect"
+    - POST "/project"
 
-    - GET "/proyect/:id"
+    - GET "/project/:id"
 
-    - PUT "/proyect/:id"
+    - PUT "/project/:id"
 
-    - DELETE "/proyect/:id"
+    - DELETE "/project/:id"
 
-    - GET "/proyect/list"
+    - GET "/project/list"
     only for admins
     

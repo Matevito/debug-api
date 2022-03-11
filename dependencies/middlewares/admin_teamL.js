@@ -1,5 +1,5 @@
 const User = require("../../models/user");
-const Proyect = require("../../models/project");
+const Project = require("../../models/project");
 
 const admin_teamL = async (req, res, next) => {
     const role = req.user.role;
@@ -7,7 +7,8 @@ const admin_teamL = async (req, res, next) => {
         next();
     };
     if (role === "Team Leader") {
-        //... todo ....
+        const proyId = req.params.id;
+        const project = await Project
         next();
     };
 

@@ -4,7 +4,7 @@ const { DateTime } = require("luxon");
 const issueSchema = mongoose.Schema({
     title: { type: String, required: true, minLength: 5, maxLength: 50 },
     description: { type: String, required: true, minLength: 5, maxLength: 500},
-    proyect: { type: mongoose.Schema.ObjectId, ref:"Project", required: true},
+    project: { type: mongoose.Schema.ObjectId, ref:"Project", required: true},
     status:  { 
         type: String,
         required: true,

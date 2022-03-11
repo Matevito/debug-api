@@ -4,7 +4,7 @@ const router = express.Router();
 // controllers
 const authCont = require("../controllers/auth");
 const demoCont = require("../controllers/demo");
-const proyCont = require("../controllers/proyect");
+const proyCont = require("../controllers/project");
 
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
@@ -23,13 +23,13 @@ router.post("/demo/developer", demoCont.login_dev, authCont.login_post);
     // all the following routes are protected.
 router.use(validateToken);
 
-// 2. Proyect routes
-router.post("/proyect", proyCont.proyect_post);
-router.put("/proyect/:id", proyCont.proyect_put);
-router.delete("/proyect/:id", proyCont.proyect_delete)
+// 2. project routes
+router.post("/project", proyCont.project_post);
+router.put("/project/:id", proyCont.project_put);
+router.delete("/project/:id", proyCont.project_delete)
 
-router.get("/proyect/list", proyCont.proyectList_get);
-router.get("/proyect/:id", proyCont.proyect_get);
+router.get("/project/list", proyCont.projectList_get);
+router.get("/project/:id", proyCont.project_get);
 
 // 3. Issues routes.
 router.post("/issue");

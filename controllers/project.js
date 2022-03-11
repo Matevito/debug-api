@@ -1,27 +1,27 @@
-exports.proyect_post = (req, res) => {
+exports.project_post = (req, res) => {
     res.json({
         msg: "todo..."
     })
 };
 
-exports.proyect_get = (req, res) => {
+exports.project_get = (req, res) => {
     res.json({
         msg: "todo..."
     })
 };
 
-exports.proyectList_get = (req, res) => {
+exports.projectList_get = (req, res) => {
     res.json({
         msg: "todo..."
     })
 }
-exports.proyect_put = (req, res) => {
+exports.project_put = (req, res) => {
     res.json({
         msg: "todo..."
     })
 };
 
-exports.proyect_delete = (req, res) => {
+exports.project_delete = (req, res) => {
     res.json({
         msg: "todo..."
     })
