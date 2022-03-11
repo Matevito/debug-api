@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app",
-    "test": "todo::.."
+    "test": "jest",
+    "devTests": "jest --detectOpenHandles"
   },
   "engines": {
     "node": "17.3.0"
@@ -20,6 +21,7 @@
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "luxon": "^2.3.1",
+    "mongodb-memory-server": "^8.4.0",
     "mongoose": "^6.2.4",
     "nodemon": "^2.0.15"
   },
@@ -34,6 +36,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.2",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "^2.5.1"
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1",
+    "supertest": "^6.2.2"
   }
 }

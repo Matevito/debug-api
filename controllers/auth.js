@@ -8,7 +8,7 @@ exports.signin_post = [
     body("username", "Username required").trim().not().isEmpty().escape(),
     body("email", "Valid email is required").trim().isEmail().normalizeEmail().escape(),
     body("password", "Invalid password").trim().isLength({ min: 5 }).escape(),
-    body("repeatPasword").custom((value, { req }) => {
+    body("repeatPassword").custom((value, { req }) => {
         // check password equality
         if (value !== req.body.password) {
             throw new Error("Passwords don't match!");
@@ -89,7 +89,6 @@ exports.login_post = [
                 error: "Invalid password"
             })
         }
-
         // 4. send jwt token to client
         const userData = {
             id: user._id,
@@ -103,8 +102,14 @@ exports.login_post = [
 
         res.json({
             error: null,
-            msg: "validation sucessfull",
+            msg: "Validation sucessfull",
             token
         })
     }
 ]
+
+exports.whoami_get = async (req, res) => {
+    res.json({
+        msg: "todo..."
+    })
+}
