@@ -7,8 +7,8 @@ const demoCont = require("../controllers/demo");
 const proyCont = require("../controllers/proyect");
 
 // middlewares
-const validateToken = require("../dependencies/validateToken");
-
+const validateToken = require("../dependencies/middlewares/validateToken");
+    //... rest of middlewares ... all middlewares require user { _id, username, role}
 // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
 router.post("/log-in", authCont.login_post);

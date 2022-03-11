@@ -13,6 +13,7 @@ const verifyToken = (req, res, next) => {
         // check token validity
         const verifiedUser = jwt.verify(token, process.env.TOKEN_SECRET);
         req.user = verifiedUser;
+        // { id, username, role}
         next();
     } catch (err) {
         res.status(400).json({

@@ -15,6 +15,7 @@ complementary models.
 - Notification()
 
 Instalation...
+create an uploads folder and inside it an screenshots too.
 
 Features....
 - Authentication using jwt and diferent type of layers of protection according the user role.
