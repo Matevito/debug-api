@@ -18,16 +18,16 @@ router.post("/demo/developer", demoCont.login_dev, authCont.login_post);
 // ¡Protected routes!
 // 2. Proyect routes
 router.post("/proyect");
-router.put("/proyect");
-router.delete("/proyect")
+router.put("/proyect/:id");
+router.delete("/proyect/:id")
 
 router.get("/proyect/list");
 router.get("/proyect/:id");
 
 // 3. Issues routes.
 router.post("/issue");
-router.put("/isue");
-router.delete("/issue");
+router.put("/isue/:id");
+router.delete("/issue/:id");
 
 router.get("/issue/list");
 router.get("/issue/:id");
@@ -37,9 +37,12 @@ router.get("/issue/:id/comment/list")
 router.post("/issue/:id/comment")
 
 // 4. User routes
-router.get("user/list");
+router.get("/user/list");
+    // edit user data - only for admins
+router.put("/user/:id");
 
-// todo: 5. notifications...
-
+// todo: other type of callbacks
+router.get("/notification/list");
+router.delete("/notification/:id");
 
 module.exports = router
