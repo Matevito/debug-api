@@ -70,7 +70,6 @@ exports.login_post = [
                 error: errors.array()
             })
         }
-
         // 2. check if user exist
         let user = await User.findOne({ username: req.body.username })
         if (!user) {

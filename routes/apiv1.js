@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const authCont = require("../controllers/auth");
+const demoCont = require("../controllers/demo");
 
 // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
@@ -10,9 +11,9 @@ router.post("/log-in", authCont.login_post);
 router.get("/whoami");
 
 // 1.5 demo auth routes
-router.post("/demo/developer");
+router.post("/demo/admin", demoCont.login_admmin, authCont.login_post);
 router.post("/demo/teamLeader");
-router.post("/demo/admin");
+router.post("/demo/developer");
 
 // 2. Proyect routes
 
