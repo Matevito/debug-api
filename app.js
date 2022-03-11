@@ -20,6 +20,12 @@ require("./dependencies/mongoConfig")
 app.use("/apiv1", apiv1router);
 
 // 5. error handling
+app.use((err, req, res) => {
+    console.log(err);
+    if (!res.headersSent) {
+      res.status(err.httpStatusCode || 500).render('UnknownError');
+    }
+});
 
 // 6. port app on server
 app.listen(port, () => {
