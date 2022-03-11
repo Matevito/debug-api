@@ -22,7 +22,7 @@ const issueSchema = mongoose.Schema({
     },
     date: { type: Date, default: DateTime.now() },
     screenshotNames: [{
-        type: Number
+        type: String
     }],
     comments: {
         type: mongoose.SchemaType.ObjectId,
