@@ -1,9 +1,12 @@
 const express = require("express");
-
 const router = express.Router();
 
+// controllers
 const authCont = require("../controllers/auth");
 const demoCont = require("../controllers/demo");
+
+// middlewares
+const validateToken = require("../dependencies/validateToken");
 
 // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
