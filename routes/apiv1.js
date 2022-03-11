@@ -12,8 +12,8 @@ router.get("/whoami");
 
 // 1.5 demo auth routes
 router.post("/demo/admin", demoCont.login_admmin, authCont.login_post);
-router.post("/demo/teamLeader");
-router.post("/demo/developer");
+router.post("/demo/teamLeader", demoCont.login_teamL, authCont.login_post);
+router.post("/demo/developer", demoCont.login_dev, authCont.login_post);
 
 // 2. Proyect routes
 
