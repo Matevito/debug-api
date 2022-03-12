@@ -45,7 +45,9 @@ router.post("/issue/:id/comment")
 
 // 4. User routes
 router.get("/user/list");
+router.get("/user/:id")
     // edit user data - only for admins
+    // /user/:ID/status ? only for admins?
 router.put("/user/:id");
 
 // todo: other type of callbacks
