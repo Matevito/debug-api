@@ -25,7 +25,7 @@ const inProject = async (req, res, next) => {
     
     // check if user is in the project team
     let pTeam = project.team;
-    pTeam = pTeam.concat(project.teamLeader);
+        // pTeam = pTeam.concat(project.teamLeader);
 
     const foundUser = pTeam.find(id => id === user.id);
     if (!foundUser) {
