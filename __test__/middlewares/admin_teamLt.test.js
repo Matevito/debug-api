@@ -18,6 +18,7 @@ app.get("/:id", setUser, admin_teamL, (req, res) => {
     })
 })
 //testDB();
+//require("./testDatabase");
 
 const devUser = {
     username: "a normal user",
