@@ -24,10 +24,10 @@ const issueSchema = mongoose.Schema({
     screenshotNames: [{
         type: String
     }],
-    comments: {
+    comments: [{
         type: mongoose.SchemaType.ObjectId,
         ref: "Comment"
-    },
+    }],
     history: [{ 
         type: mongoose.SchemaType.ObjectId,
         ref: "ChangeLog",

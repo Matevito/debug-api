@@ -6,8 +6,7 @@ const admin_teamL = async (req, res, next) => {
     const userId = req.user.id
     if (role === "Admin") {
         next();
-    };
-    if (role === "Team Leader") {
+    } else if (role === "Team Leader") {
         const projId = req.params.id;
         const project = await Project.findById( projId );
         if (!project) {
@@ -20,11 +19,11 @@ const admin_teamL = async (req, res, next) => {
         if (project.teamLeader === userId) {
             next();
         }
-    };
-
-    return res.status(401).json({
-        error: "Access denied"
-    });
+    } else {
+        return res.status(401).json({
+            error: "Access denied"
+        })
+    }
 };
 
 module.exports = admin_teamL;

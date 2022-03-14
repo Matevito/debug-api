@@ -8,8 +8,12 @@ const proyCont = require("../controllers/project");
 
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
-    //... rest of middlewares ... all middlewares require user { _id, username, role}
-// 1. auth routes
+    // all middlewares require user { _id, username, role}
+
+// sanitize forms
+const sanitizeP = require("../dependencies/middlewares/sanitizeProject");
+
+    // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
 router.post("/log-in", authCont.login_post);
 router.get("/whoami");
@@ -25,6 +29,7 @@ router.use(validateToken);
 
 // 2. project routes
 router.post("/project", proyCont.project_post);
+
 router.put("/project/:id", proyCont.project_put);
 router.delete("/project/:id", proyCont.project_delete)
 

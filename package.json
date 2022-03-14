@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app",
     "test": "jest",
-    "devTests": "jest --detectOpenHandles"
+    "devtest": "jest --detectOpenHandles"
   },
   "engines": {
     "node": "17.3.0"
