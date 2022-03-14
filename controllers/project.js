@@ -1,6 +1,8 @@
 exports.project_post = (req, res) => {
+    //
     res.json({
-        msg: "todo..."
+        msg: "data is fine",
+        data: req.body
     })
 };
 exports.project_get = (req, res) => {

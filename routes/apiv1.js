@@ -11,7 +11,7 @@ const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
 
 // sanitize forms
-const sanitizeP = require("../dependencies/middlewares/sanitizeProject");
+const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
 
     // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
@@ -25,10 +25,10 @@ router.post("/demo/developer", demoCont.login_dev, authCont.login_post);
 
 // ¡Protected routes!
     // all the following routes are protected.
-router.use(validateToken);
+//router.use(validateToken);
 
 // 2. project routes
-router.post("/project", proyCont.project_post);
+router.post("/project", sanitizeProject, proyCont.project_post);
 
 router.put("/project/:id", proyCont.project_put);
 router.delete("/project/:id", proyCont.project_delete)
