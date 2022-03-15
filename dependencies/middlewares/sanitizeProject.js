@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../../models/user");
-var ObjectId = require('mongoose').Types.ObjectId;
+const isValidId = require("../isValidId");
 
 const sanitizeProject = [
     body("title", "A title for the project is required").trim().escape(),
@@ -18,7 +18,7 @@ const sanitizeProject = [
         });
 
         // team members are on db
-        if (!ObjectId.isValid.team_member) {
+        if (!isValidId(team_member)) {
             throw new Error("User id is corrupted")
         };
         let found_user = await User.findById(team_member);
