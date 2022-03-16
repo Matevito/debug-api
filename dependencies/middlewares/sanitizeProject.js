@@ -1,10 +1,11 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../../models/user");
+const Project = require("../../models/project");
 const isValidId = require("../isValidId");
 
 const sanitizeProject = [
-    body("title", "A title for the project is required").trim().escape(),
-    body("description", "A description is required").trim().escape(),
+    body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
+    body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
     body("team.*").custom(async(team_member, { req }) => {
         let team_list = req.body.team;
 
@@ -39,7 +40,7 @@ const sanitizeProject = [
         // value is not null
         return true;
     }).escape(),
-    (req, res, next) => {
+    async (req, res, next) => {
         let errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -47,6 +48,14 @@ const sanitizeProject = [
                 error: errors.array()
             })
         };
+        // check if a project title is already used.
+        const checkProjTitle = await Project.findOne({ title: req.body.title });
+        if (checkProjTitle) {
+            return res.status(400).json({
+                error: "Project title is already used, try with one different",
+            })
+        };
+
         // parsed data is valid, continue
         next();
     }

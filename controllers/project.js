@@ -2,6 +2,14 @@ const Project = require("../models/project");
 const User = require("../models/user")
 
 exports.project_post = async (req, res) => {
+    // 0. check if a project title is already used.
+    const checkProjTitle = await Project.findOne({ title: req.body.title });
+    if (checkProjTitle) {
+        return res.status(400).json({
+            error: "Project title is already used, try with one different",
+        })
+    };
+
     // 1. create project obj
     const new_project = new Project({
         title: req.body.title,
