@@ -1,4 +1,5 @@
 const Project = require("../models/project");
+const User = require("../models/user")
 
 exports.project_post = async (req, res) => {
     // 1. create project obj
@@ -9,10 +10,26 @@ exports.project_post = async (req, res) => {
         teamLeader: req.body.teamLeader
     });
     // 2. handle teamLeader role status
+    const teamLeader = await User.findById(req.body.teamLeader);
+    if (teamLeader.role === "Developer"){
+        // change it's status.
+        teamLeader.role = "Team Leader";
+        const id = req.body.teamLeader;
+
+        const updated_userStatus = await User.findByIdAndUpdate(id, teamLeader);
+        if (!updated_userStatus) {
+            res.status(400).json({
+                error: "Problem changing team leader role status"
+            })
+        };
+        // send notification to new teamLeader
+    };
+
     try {
-        // 3. save the project and send notifications
+        // 3. save the project 
         const savedP = await new_project.save();
         
+        // 3.1 send notifications...
         // 4. send response
         res.json({
             error: null,
@@ -20,7 +37,7 @@ exports.project_post = async (req, res) => {
             data: new_project
         })
 
-    } catch (err) {
+    } catch (error) {
         res.status(400).json({ error })
     }
 
