@@ -23,18 +23,11 @@ const issueSchema = mongoose.Schema({
     date: { type: Date, default: DateTime.now() },
     screenshotNames: [{
         type: String
-    }],
-    comments: [{
-        type: mongoose.SchemaType.ObjectId,
-        ref: "Comment"
-    }],
-    history: [{ 
-        type: mongoose.SchemaType.ObjectId,
-        ref: "ChangeLog",
-    }]
+    }] 
 });
 
 // format date
 
+// get_comments and history;
 const Issue = mongoose.model("Issue", issueSchema);
 module.exports = Issue;

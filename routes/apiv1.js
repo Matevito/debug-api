@@ -10,10 +10,13 @@ const proyCont = require("../controllers/project");
 const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
 
+const adminOnly = require("../dependencies/middlewares/adminOnly");
+const admin_teamL = require("../dependencies/middlewares/admin_teamL")
+const inProject = require("../dependencies/middlewares/inProject")
 // sanitize forms
 const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
-
-    // 1. auth routes
+    
+// 1. auth routes
 router.post("/sign-in", authCont.signin_post);
 router.post("/log-in", authCont.login_post);
 router.get("/whoami");
@@ -25,10 +28,10 @@ router.post("/demo/developer", demoCont.login_dev, authCont.login_post);
 
 // ¡Protected routes!
     // all the following routes are protected.
-//router.use(validateToken);
+router.use(validateToken);
 
 // 2. project routes
-router.post("/project", sanitizeProject, proyCont.project_post);
+router.post("/project", adminOnly, sanitizeProject, proyCont.project_post);
 
 router.put("/project/:id", proyCont.project_put);
 router.delete("/project/:id", proyCont.project_delete)

@@ -1,8 +1,19 @@
+const Project = require("../models/project");
+
+const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
+
 exports.project_post = (req, res) => {
-    //
+    // todo... component structure
+    const new_project = new Project({
+        title: req.body.title,
+        description: req.body.description,
+        team: req.body.team,
+        teamLeader: req.body.teamLeader
+    });
+
     res.json({
         msg: "data is fine",
-        data: req.body
+        data: new_project
     })
 };
 exports.project_get = (req, res) => {

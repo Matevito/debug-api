@@ -38,4 +38,4 @@ const inProject = async (req, res, next) => {
     next();
 };
 
-module.exports = inproject;
+module.exports = inProject;
