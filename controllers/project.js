@@ -1,5 +1,6 @@
 const Project = require("../models/project");
 const User = require("../models/user")
+const createNotifications = require("../dependencies/createNotifications");
 
 exports.project_post = async (req, res) => {
     // 0. check if a project title is already used.
@@ -17,6 +18,7 @@ exports.project_post = async (req, res) => {
         team: req.body.team,
         teamLeader: req.body.teamLeader
     });
+
     // 2. handle teamLeader role status
     const teamLeader = await User.findById(req.body.teamLeader);
     if (teamLeader.role === "Developer"){
@@ -31,22 +33,33 @@ exports.project_post = async (req, res) => {
             })
         };
         // send notification to new teamLeader
+        const message = "role status changed";
+        const ref = "user";
+        const value = teamLeader._id;
+        createNotifications([teamLeader], req.body.user, ref, value, message);
     };
-
     try {
+
         // 3. save the project 
         const savedP = await new_project.save();
-        
+
         // 3.1 send notifications...
+        const message = "you have been assigned to a new project";
+        const ref = "project"
+        const value =  savedP._id
+        const author = req.user.id
+        const notifications = createNotifications(req.body.team, author ,ref , value, message)
+
         // 4. send response
         res.json({
             error: null,
             msg: "project created",
-            data: new_project
+            data: savedP,
+            notifications
         })
 
     } catch (error) {
-        res.status(400).json({ error })
+        res.status(400).json({ error: "Error saving data on db" })
     }
 
 };

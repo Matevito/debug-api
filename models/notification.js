@@ -13,7 +13,8 @@ const notificationSchema = mongoose.Schema({
         required: true
     },
     message: { type: String, required: true },
-    url: { type: String, required: true },
+    ref: { type:String, required: true },
+    value: { type: mongoose.Schema.ObjectId, required: true },
     date: { type: Date, default: DateTime.now() },
 });
 
