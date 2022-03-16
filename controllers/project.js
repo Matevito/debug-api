@@ -1,20 +1,29 @@
 const Project = require("../models/project");
 
-const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
-
-exports.project_post = (req, res) => {
-    // todo... component structure
+exports.project_post = async (req, res) => {
+    // 1. create project obj
     const new_project = new Project({
         title: req.body.title,
         description: req.body.description,
         team: req.body.team,
         teamLeader: req.body.teamLeader
     });
+    // 2. handle teamLeader role status
+    try {
+        // 3. save the project and send notifications
+        const savedP = await new_project.save();
+        
+        // 4. send response
+        res.json({
+            error: null,
+            msg: "project created",
+            data: new_project
+        })
 
-    res.json({
-        msg: "data is fine",
-        data: new_project
-    })
+    } catch (err) {
+        res.status(400).json({ error })
+    }
+
 };
 exports.project_get = (req, res) => {
     // returns a project in db with req.params.id

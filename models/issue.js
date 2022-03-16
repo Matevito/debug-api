@@ -28,6 +28,7 @@ const issueSchema = mongoose.Schema({
 
 // format date
 
-// get_comments and history;
+// todo: get_comments and history;
+
 const Issue = mongoose.model("Issue", issueSchema);
 module.exports = Issue;
