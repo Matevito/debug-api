@@ -37,6 +37,11 @@ const adminUser = {
 }
 
 describe("admin or teamLeader tests", () => {
+    /*
+    beforeAll(async() => {
+        await testDB()
+    });
+    */
     test("User is an admin" , async () => {
         const res = await request(app)
                             .get("/1")
@@ -46,7 +51,7 @@ describe("admin or teamLeader tests", () => {
         expect(res.body.msg).toEqual("Test passed")     
         expect(res.body.error).toEqual(null)            
     });
-    test.todo("User is a team leader on the proyect");
-    test.todo("User is a team leader but not of the proyect");
-    test.todo("User is a developer");
+    //test.todo("User is a team leader on the proyect");
+    //test.todo("User is a team leader but not of the proyect");
+    //test.todo("User is a developer");
 })

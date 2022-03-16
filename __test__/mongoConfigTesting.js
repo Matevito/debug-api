@@ -16,7 +16,7 @@ async function initializeMongoServer() {
     });
 
     mongoose.connection.once("open", () => {
-        console.log(`DB successfully connected to ${mongoUri}`)
+        //console.log(`DB successfully connected to ${mongoUri}`)
     })
 }
 

@@ -36,7 +36,7 @@ exports.project_post = async (req, res) => {
         const message = "role status changed";
         const ref = "user";
         const value = teamLeader._id;
-        createNotifications([teamLeader], req.body.user, ref, value, message);
+        createNotifications([teamLeader], req.user.id , ref, value, message);
     };
     try {
 
@@ -61,8 +61,8 @@ exports.project_post = async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: "Error saving data on db" })
     }
-
 };
+
 exports.project_get = (req, res) => {
     // returns a project in db with req.params.id
     res.json({
