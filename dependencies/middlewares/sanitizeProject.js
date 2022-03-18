@@ -33,12 +33,12 @@ const sanitizeProject = [
     body("teamLeader").custom((teamLeader, { req }) => {
         // leader is on team member list
         const team_list = req.body.team;
-        if (!team_list.includes(teamLeader)) {
-            // if is not on the list...
-            throw new Error("team leader is not in the team list")
+        if (team_list.includes(teamLeader)) {
+            // value is not null
+            return true;
         };
-        // value is not null
-        return true;
+        // if is not on the list...
+        throw new Error("team leader is not in the team list")
     }).escape(),
     async (req, res, next) => {
         let errors = validationResult(req);

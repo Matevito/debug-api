@@ -16,7 +16,7 @@ describe("auth tests", () => {
         await testDB()
     });
 
-    test("sign-in handles incopmplete form data", done => {
+    test("sign-in handles incomplete form data", done => {
         request(app)
             .post("/sign-in")
             .type("form")

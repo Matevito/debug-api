@@ -23,7 +23,7 @@ exports.project_post = async (req, res) => {
     const teamLeader = await User.findById(req.body.teamLeader);
     if (teamLeader.role === "Developer"){
         // change it's status.
-        teamLeader.role = "Team Leader";
+        teamLeader.role = "Team leader";
         const id = req.body.teamLeader;
 
         const updated_userStatus = await User.findByIdAndUpdate(id, teamLeader);

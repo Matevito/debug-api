@@ -1,6 +1,4 @@
 node_modules
 uploads
-__test__/populateDb.js
-__test__/userList.js
 __test__/middlewares/admin_teamLt.test.js
 .env
