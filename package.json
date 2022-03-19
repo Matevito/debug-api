@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app",
-    "test": "jest",
-    "devtest": "jest --detectOpenHandles"
+    "test": "jest --forceExit",
+    "devtest": "jest --forceExit --detectOpenHandles"
   },
   "engines": {
     "node": "17.3.0"

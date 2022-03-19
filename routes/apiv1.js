@@ -10,10 +10,11 @@ const proyCont = require("../controllers/project");
 const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
 
+    // protection on routes.
 const adminOnly = require("../dependencies/middlewares/adminOnly");
 const admin_teamL = require("../dependencies/middlewares/admin_teamL")
 const inProject = require("../dependencies/middlewares/inProject")
-// sanitize forms
+    // sanitize forms
 const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
     
 // 1. auth routes

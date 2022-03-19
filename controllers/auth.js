@@ -71,10 +71,12 @@ exports.login_post = [
             })
         }
         // 2. check if user exist
+        
         let user = await User.findOne({ username: req.body.username })
         if (!user) {
             user = await User.findOne({ email: req.body.username })
         };
+        
         if (!user) {
             return res.status(400).json({
                 error: "User not found"
