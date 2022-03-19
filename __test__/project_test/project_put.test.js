@@ -10,6 +10,7 @@ const testDB = require("../mongoConfigTesting");
 const userList = require("../userList").get_users
 
 //jest.useFakeTimers()
+jest.setTimeout(30000)
 
 const app = express();
 
@@ -128,7 +129,7 @@ describe("edit_project test", () => {
         devToken = devToken.body.token
         //test
         const res = await request(app)
-            .put(`project/${testProject}`)
+            .put(`/project/${testProject}`)
             .type("form")
             .send({})
             .set('Content-Type', 'application/json')
@@ -156,7 +157,7 @@ describe("edit_project test", () => {
             teamLeader: usersList[4]._id
         }
         const res = await request(app)
-            .put(`project/${testProject}`)
+            .put(`/project/${testProject}`)
             .type("form")
             .send(editProjForm)
             .set('Content-Type', 'application/json')
@@ -180,7 +181,7 @@ describe("edit_project test", () => {
             teamLeader: usersList[0]._id
         };
         const res = await request(app)
-            .put(`project/${testProject}`)
+            .put(`/project/${testProject}`)
             .type("form")
             .send(editProjForm)
             .set('Content-Type', 'application/json')
@@ -203,7 +204,7 @@ describe("edit_project test", () => {
             teamLeader: usersList[2]._id
         };
         const res = await request(app)
-            .put(`project/${testProject}`)
+            .put(`/project/${testProject}`)
             .type("form")
             .send(editProjForm)
             .set('Content-Type', 'application/json')
