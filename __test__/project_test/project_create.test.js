@@ -9,6 +9,7 @@ const testDB = require("../mongoConfigTesting");
 const userList = require("../userList").get_users
 
 //jest.useFakeTimers()
+jest.setTimeout(30000)
 
 const app = express();
 

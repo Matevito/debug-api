@@ -1,4 +1,5 @@
 node_modules
 uploads
 __test__/middlewares/admin_teamLt.test.js
+/coverage
 .env

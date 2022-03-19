@@ -34,7 +34,7 @@ router.use(validateToken);
 // 2. project routes
 router.post("/project", adminOnly, sanitizeProject, proyCont.project_post);
 
-router.put("/project/:id", proyCont.project_put);
+router.put("/project/:id", admin_teamL, sanitizeProject, proyCont.project_put);
 router.delete("/project/:id", proyCont.project_delete)
 
 router.get("/project/list", proyCont.projectList_get);
