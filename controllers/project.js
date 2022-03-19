@@ -66,14 +66,69 @@ exports.project_post = async (req, res) => {
 exports.project_get = (req, res) => {
     // returns a project in db with req.params.id
     res.json({
-        msg: "todo..."
+        msg: "todo"
     })
 };
-exports.project_put = (req, res) => {
+exports.project_put = async (req, res) => {
     // edits a project in db with req.params.id
-    res.json({
-        msg: "todo..."
-    })
+    const projectID = req.params.id;
+
+    // check if the project exist
+    const checkProj = await Project.findById(projectID);
+    if (!checkProj) {
+        return res.status(400).json({
+            error: "Project not found"
+        })
+    };
+
+    const edited_project = new Project({
+        _id: checkProj._id,
+        title: req.body.title,
+        description: req.body.description,
+        team: req.body.team,
+        teamLeader: req.body.teamLeader
+    });
+
+    // handle teamLeader role status;
+    const teamLeader = await User.findById(req.body.teamLeader);
+    if (teamLeader.role === "Developer"){
+        teamLeader.role = "Team leader";
+        const leaderId = req.body.teamLeader;
+        const updated_userStatus = await User.findByIdAndUpdate(leaderId, teamLeader);
+        if (!updated_userStatus) {
+            res.status(400).json({
+                error:" Problem changing team leader role status"
+            })
+        };
+        // send notifications of this change
+        const message = "role status changed";
+        const ref = "user";
+        const value = teamLeader._id;
+        createNotifications([teamLeader], req.user.id, ref, value, message);
+    };
+
+    // save edited project
+    try {
+        
+        const editedP = await Project.findByIdAndUpdate(checkProj._id, edited_project);
+        // send notifications
+        const message = "Changes have been made on the project";
+        const ref = "project";
+        const value = editedP._id;
+        const author = req.user.id;
+        //todo: remove the author to the list of users to send notifications
+        const notifications = createNotifications(req.body.team, author, ref, value, message);
+
+        // send response
+        res.json({
+            error: null,
+            msg: "project successfully edited",
+            data: editedP,
+            notifications,
+        })
+    } catch(error) {
+        res.status(400).json({ error: "Error saving data on db" })
+    }
 };
 
 exports.project_delete = (req, res) => {

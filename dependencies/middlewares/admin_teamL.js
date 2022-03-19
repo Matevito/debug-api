@@ -1,4 +1,3 @@
-const User = require("../../models/user");
 const Project = require("../../models/project");
 
 const admin_teamL = async (req, res, next) => {
@@ -6,17 +5,17 @@ const admin_teamL = async (req, res, next) => {
     const userId = req.user.id
     if (role === "Admin") {
         next();
-    } else if (role === "Team Leader") {
+    } else if (role === "Team leader") {
         const projId = req.params.id;
-        const project = await Project.findById( projId );
+        const project = await Project.findById(projId);
         if (!project) {
             return res.status(400).json({
-                error: "Proyect not found."
+                error: "Project not found."
             })
         }
-
         // If the user is the teamleader of project :id
-        if (project.teamLeader === userId) {
+        // == insted of === pass passes a bug
+        if (project.teamLeader == userId) {
             next();
         }
     } else {

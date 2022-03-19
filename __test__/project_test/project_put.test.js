@@ -137,7 +137,7 @@ describe("edit_project test", () => {
         expect(res.status).toEqual(401)
         expect(res.body.error).toEqual("Access denied")
     })
-    /*
+    
     test("sucessfully edit a title and description", async () => {
         const users = await userList();
         const teamLform = {
@@ -165,13 +165,14 @@ describe("edit_project test", () => {
             .set({"auth-token": teamLToken})
         const editedProj = await Project.findById(testProject);
 
-        expect(res.status).toEqual(202)
+        expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(editedProj.title).toEqual("new proj test");
         expect(editedProj.description).toEqual("a new description");
         expect(editedProj.team.length).toEqual(3);
         expect(editedProj.teamLeader).toEqual(usersList[4]._id);
     });
+    
     test("successfully edits a team, and teamL", async () => {
         // tests
         const editProjForm = {
@@ -189,12 +190,13 @@ describe("edit_project test", () => {
             .set({"auth-token": adminToken})
         const editedProj = await Project.findById(testProject);
 
-        expect(res.status).toEqual(202)
+        expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(editedProj.team.length).toEqual(2)
         expect(editedProj.teamLeader).toEqual(usersList[0]._id)
         expect(editedProj.title).toEqual("proj test")
     });
+    
     test("edit test can change dev status", async () => {
         // tests
         const editProjForm = {
@@ -213,11 +215,11 @@ describe("edit_project test", () => {
         const editedProj = await Project.findById(testProject);
         const new_TeamL = await User.findById(usersList[2]);
 
-        expect(res.status).toEqual(202)
+        expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
-        expect(editedProj.teamLeader).toEqual(usersList[2]);
+        expect(editedProj.teamLeader).toEqual(usersList[2]._id);
         expect(editedProj.team.length).toEqual(3);
         expect(new_TeamL.role).toEqual("Team leader");
     })
-    */
+    
 })

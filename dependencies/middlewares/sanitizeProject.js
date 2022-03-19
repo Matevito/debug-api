@@ -1,6 +1,5 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../../models/user");
-const Project = require("../../models/project");
 const isValidId = require("../isValidId");
 
 const sanitizeProject = [
@@ -46,13 +45,6 @@ const sanitizeProject = [
             return res.status(400).json({
                 msg: "Error with parsed form data",
                 error: errors.array()
-            })
-        };
-        // check if a project title is already used.
-        const checkProjTitle = await Project.findOne({ title: req.body.title });
-        if (checkProjTitle) {
-            return res.status(400).json({
-                error: "Project title is already used, try with one different",
             })
         };
 
