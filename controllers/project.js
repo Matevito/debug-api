@@ -1,6 +1,7 @@
 const Project = require("../models/project");
 const User = require("../models/user")
 const createNotifications = require("../dependencies/createNotifications");
+const { post } = require("../routes/apiv1");
 
 exports.project_post = async (req, res) => {
     // 0. check if a project title is already used.
@@ -131,11 +132,26 @@ exports.project_put = async (req, res) => {
     }
 };
 
-exports.project_delete = (req, res) => {
+exports.project_delete = async (req, res) => {
     // deletes a project in db with req.params.id
-    res.json({
-        msg: "todo..."
-    })
+    const projId = req.params.id;
+
+    const proj = await Project.findById(projId);
+    if (!proj) {
+        return res.status(400).json({
+            error: "Project not found"
+        })
+    };
+    // atttemp to delete proj
+    try {
+        await Project.findByIdAndRemove(proj._id);
+        res.json({
+            error: null,
+            message: "project deleted!"
+        })
+    } catch (error) {
+        res.status(400).json({ error })
+    }
 };
 
 exports.projectList_get = (req, res) => {

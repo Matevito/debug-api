@@ -133,15 +133,17 @@ describe("DELETE project/:id tests", () => {
         expect(res.body.error).toEqual(null)
         expect(removedPrj).toEqual(null)
     });
-
-    test("handles a project that does not exist", () => {
+    
+    test("handles a project that does not exist", async () => {
+        const testId = "todo:... valid mongoddb id"
         const res = await request(app)
             .delete(`/project/${projId}`)
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": adminToken})
-    
+            
         expect(res.status).toEqual(400)
         expect(res.body.error).toEqual("Project not found")
     });
+    
 })
