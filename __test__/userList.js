@@ -2,25 +2,25 @@ const User = require("../models/user");
 const userList = [
     {
         username: "testAdmin",
-        email: "test@email.com",
+        email: "test0@email.com",
         password: "example..",
         role: "Admin",
     },
     {
         username: "testDev1",
-        email: "test2@email.com",
+        email: "test1@email.com",
         password: "example..",
         role: "Developer",
     },
     {
         username: "testDev2",
-        email: "test3@email.com",
+        email: "test2@email.com",
         password: "example..",
         role: "Developer",
     },
     {
         username: "testDev-teamL",
-        email: "test4@email.com",
+        email: "test3@email.com",
         password: "example..",
         role: "Developer",
     },

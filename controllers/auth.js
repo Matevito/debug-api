@@ -30,7 +30,14 @@ exports.signin_post = [
         const usernameExist = await User.findOne({ username: req.body.username });
         const emailExist = await User.findOne({ email: req.body.email });
         
-        if (usernameExist || emailExist) {
+        if (usernameExist) {
+            return res.status(400).json(
+                {
+                    error: "A user with the parsed username or email is already registered!"
+                }
+            )
+        };
+        if (emailExist) {
             return res.status(400).json(
                 {
                     error: "A user with the parsed username or email is already registered!"

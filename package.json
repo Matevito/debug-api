@@ -8,7 +8,8 @@
     "dev": "nodemon app",
     "test": "jest --forceExit",
     "devtest": "jest --forceExit --detectOpenHandles",
-    "test_coverage": "jest --forceExit --detectOpenHandles --coverage"
+    "test_coverage": "jest --forceExit --detectOpenHandles --coverage",
+    "testone": "jest --forceExit --detectOpenHandles -t 'delete'"
   },
   "engines": {
     "node": "17.3.0"
