@@ -51,7 +51,7 @@ describe("GET /project/:id tests", () => {
 
     })
     //test.todo("handles :id that does not exist")
-    test.only("handles user not assigned to proj", async () => {
+    test("handles user not assigned to proj", async () => {
         const users = await userList();
         let devToken = await request(app)
             .post("/log-in")
@@ -65,6 +65,7 @@ describe("GET /project/:id tests", () => {
         // test
         const res = await request(app)
             .get(`/project/${projId}`)
+            .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": devToken})
         
@@ -85,12 +86,13 @@ describe("GET /project/:id tests", () => {
         //test
         const res = await request(app)
             .get(`/project/${projId}`)
+            .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": adminToken})
-
+        //console.log(res.status)
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
-        expect(res.body.data._id).toEqual(projId)
+        expect(res.body.data._id == projId).toBe(true)
     })
     test("handles user assigned to project", async() => {
 
@@ -107,11 +109,12 @@ describe("GET /project/:id tests", () => {
         //test
         const res = await request(app)
             .get(`/project/${projId}`)
+            .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": devToken})
-
+        console.log(res.body)
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
-        expect(res.body.data._id).toEqual(projId)
+        expect(res.body.data._id == projId).toEqual(true)
     })
 })

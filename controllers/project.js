@@ -146,10 +146,20 @@ exports.project_delete = async (req, res) => {
         res.status(400).json({ error })
     }
 };
-exports.project_get = (req, res) => {
-    // returns a project in db with req.params.id
-    res.json({
-        msg: "todo"
+exports.project_get = async (req, res) => {
+    // returns a project in db with req.params.id}
+    const project = await Project.findById(req.params.id)
+    if (!project) {
+        return res.status(400).json({
+            error: "Issue does not have assigned a valid proyect"
+        })
+    };
+
+    return res.json({
+        error: null,
+        msg: "Project succesfully send",
+        data: project,
+        issues: []
     })
 };
 exports.projectList_get = (req, res) => {
