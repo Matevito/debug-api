@@ -9,7 +9,7 @@
     "test": "jest --forceExit",
     "devtest": "jest --forceExit --detectOpenHandles",
     "test_coverage": "jest --forceExit --detectOpenHandles --coverage",
-    "testone": "jest --forceExit --detectOpenHandles -t 'delete'"
+    "testone": "jest --forceExit --detectOpenHandles -t 'get'"
   },
   "engines": {
     "node": "17.3.0"

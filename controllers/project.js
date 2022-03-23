@@ -1,7 +1,6 @@
 const Project = require("../models/project");
 const User = require("../models/user")
 const createNotifications = require("../dependencies/createNotifications");
-const { post } = require("../routes/apiv1");
 
 exports.project_post = async (req, res) => {
     // 0. check if a project title is already used.
@@ -64,12 +63,6 @@ exports.project_post = async (req, res) => {
     }
 };
 
-exports.project_get = (req, res) => {
-    // returns a project in db with req.params.id
-    res.json({
-        msg: "todo"
-    })
-};
 exports.project_put = async (req, res) => {
     // edits a project in db with req.params.id
     const projectID = req.params.id;
@@ -153,7 +146,12 @@ exports.project_delete = async (req, res) => {
         res.status(400).json({ error })
     }
 };
-
+exports.project_get = (req, res) => {
+    // returns a project in db with req.params.id
+    res.json({
+        msg: "todo"
+    })
+};
 exports.projectList_get = (req, res) => {
     res.json({
         msg: "todo..."
