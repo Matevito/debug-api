@@ -84,7 +84,6 @@ describe("GET project/list tests", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": userToken})
         
-        //console.log(res.body)
         expect(res.status).toEqual(200);
         expect(res.body.error).toEqual(null);
         expect(res.body.data.length).toEqual(0);
@@ -118,7 +117,7 @@ describe("GET project/list tests", () => {
             .post("/log-in")
             .type("form")
             .send({
-                username: users[4].username,
+                username: users[4].email,
                 password: users[4].password
             })
         userToken = userToken.body.token
@@ -128,10 +127,10 @@ describe("GET project/list tests", () => {
             .get("/project/list")
             .set('Accept', 'application/json')
             .set({"auth-token": userToken})
-        
+            
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
-        expect(res.body.data.lenth).toEqual(2)
+        expect(res.body.data.length).toEqual(2)
         expect(res.body.data[0].title).toEqual("proj1")
         expect(res.body.data[1].title).toEqual("proj2")
     })

@@ -170,8 +170,25 @@ exports.project_get = async (req, res) => {
         issues: projIssues
     })
 };
-exports.projectList_get = (req, res) => {
+exports.projectList_get = async (req, res) => {
+    let projectList = await Project.find({});
+    if (!projectList) {
+        return res.status(400).json({
+            error: "Data not found"
+        })
+    };
+
+    // exception for admins
+    if (req.user.role !== "Admin"){
+        // only projects where user is part of the team 
+        projectList = projectList.filter((projObj) => {
+            return projObj.team.includes(req.user.id)
+        })
+    };
+
     res.json({
-        msg: "todo..."
+        error: null,
+        msg: "Successfully send project data",
+        data: projectList
     })
 }
