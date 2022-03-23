@@ -51,7 +51,7 @@ describe("GET /project/:id tests", () => {
 
     })
     //test.todo("handles :id that does not exist")
-    test("handles user not assigned to proj", async () => {
+    test.only("handles user not assigned to proj", async () => {
         const users = await userList();
         let devToken = await request(app)
             .post("/log-in")

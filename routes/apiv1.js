@@ -38,7 +38,7 @@ router.put("/project/:id", admin_teamL, sanitizeProject, proyCont.project_put);
 router.delete("/project/:id", adminOnly, proyCont.project_delete)
 
 router.get("/project/list", proyCont.projectList_get);
-router.get("/project/:id", proyCont.project_get);
+router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
 router.post("/project/:id/issue");

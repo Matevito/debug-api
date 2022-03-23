@@ -9,6 +9,7 @@ const inProject = async (req, res, next) => {
         next();
     }
     // check if the issue and it's proyect exist on database
+    /* for a future middleware, check issue
     const issueId = req.params.id;
     const issue = await Issue.findById(issueId);
     if (!issue) {
@@ -16,7 +17,8 @@ const inProject = async (req, res, next) => {
             error: `Issue not found`
         })
     };
-    const project = await Project.findById(issue.project);
+    */
+    const project = await Project.findById(req.params.id);
     if (!project) {
         return res.status(400).json({
             error: "Issue does not have assigned a valid proyect"
