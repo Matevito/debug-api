@@ -1,4 +1,5 @@
 const Project = require("../models/project");
+const Issue = require("../models/issue");
 const User = require("../models/user")
 const createNotifications = require("../dependencies/createNotifications");
 
@@ -151,15 +152,22 @@ exports.project_get = async (req, res) => {
     const project = await Project.findById(req.params.id)
     if (!project) {
         return res.status(400).json({
-            error: "Issue does not have assigned a valid proyect"
+            error: "Project not found"
         })
     };
 
-    return res.json({
+    // todo: check paring data of issues
+    const projIssues = await Issue.find({ project: req.params.id })
+    if (!projIssues) {
+        return res.status(400).json({
+            error: "Error parsing project data"
+        })
+    };
+    res.json({
         error: null,
         msg: "Project succesfully send",
         data: project,
-        issues: []
+        issues: projIssues
     })
 };
 exports.projectList_get = (req, res) => {

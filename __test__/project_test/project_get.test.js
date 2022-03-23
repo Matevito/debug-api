@@ -89,7 +89,7 @@ describe("GET /project/:id tests", () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": adminToken})
-        //console.log(res.status)
+            
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data._id == projId).toBe(true)
@@ -112,7 +112,7 @@ describe("GET /project/:id tests", () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": devToken})
-        console.log(res.body)
+
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data._id == projId).toEqual(true)

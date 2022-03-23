@@ -11,8 +11,7 @@ const inProject = async(req, res, next) => {
         
         // check if user is in the project team
         let pTeam = project.team;
-        console.log(pTeam)
-        console.log(user.id)
+    
         const foundUser = pTeam.find(id => id == user.id);
         if (!foundUser) {
             return res.status(401).json({
