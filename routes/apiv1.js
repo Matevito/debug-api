@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
+const multer = require("multer");
+const upload = multer({ dest: "./uploads/" });
+
 // controllers
 const authCont = require("../controllers/auth");
 const demoCont = require("../controllers/demo");
 const proyCont = require("../controllers/project");
+const issueCont = require("../controllers/issue");
 
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
@@ -12,8 +16,8 @@ const validateToken = require("../dependencies/middlewares/validateToken");
 
     // protection on routes.
 const adminOnly = require("../dependencies/middlewares/adminOnly");
-const admin_teamL = require("../dependencies/middlewares/admin_teamL")
-const inProject = require("../dependencies/middlewares/inProject")
+const admin_teamL = require("../dependencies/middlewares/admin_teamL");
+const inProject = require("../dependencies/middlewares/inProject");
     // sanitize forms
 const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
     
@@ -41,14 +45,15 @@ router.get("/project/list", proyCont.projectList_get);
 router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
-router.post("/project/:id/issue");
+router.post("/project/:id/issue", issueCont.issue_post);
 
-router.get("/project/:id/issue/list")
+router.get("/project/:id/issue/list", issueCont.issueList_get);
+router.get("/issue/:id", issueCont.issue_get);
 
-router.get("/issue/:id");
-router.put("/issue/:id/take-issue")
-router.put("/issue/:id")
-router.delete("/issue/:id")
+router.put("/issue/:id/take-issue", issueCont.takeIssue_put);
+router.put("/issue/:id", issueCont.issue_put);
+
+router.delete("/issue/:id", issueCont.issue_delete);
 
 // 3.1 Comments routes
 router.get("/issue/:id/comment/list")

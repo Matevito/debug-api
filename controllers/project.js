@@ -63,7 +63,6 @@ exports.project_post = async (req, res) => {
         res.status(400).json({ error: "Error saving data on db" })
     }
 };
-
 exports.project_put = async (req, res) => {
     // edits a project in db with req.params.id
     const projectID = req.params.id;
@@ -125,7 +124,6 @@ exports.project_put = async (req, res) => {
         res.status(400).json({ error: "Error saving data on db" })
     }
 };
-
 exports.project_delete = async (req, res) => {
     // deletes a project in db with req.params.id
     const projId = req.params.id;
@@ -137,6 +135,7 @@ exports.project_delete = async (req, res) => {
         })
     };
     // atttemp to delete proj
+    // todo: delete all issues and comments related to the project
     try {
         await Project.findByIdAndRemove(proj._id);
         res.json({
