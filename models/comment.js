@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema({
     user: { type: mongoose.Schema.ObjectId, ref:"User", required: true},
     date: { type: Date, default: DateTime.now() },
     message: { type: String, required:true, minLength: 1, maxLength: 500 },
-    screenshotName: { type: String },
+    screenshot: [{ type: String }],
 });
 
 //todo: return date formatted.

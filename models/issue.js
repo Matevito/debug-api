@@ -8,7 +8,7 @@ const issueSchema = mongoose.Schema({
     status:  { 
         type: String,
         required: true,
-        enum:["open", "aditional info needed","in progress", "solved"]
+        enum:["open", "aditional info needed","in progress", "under review", "solved"]
     },
     priority: { 
         type: String,
@@ -18,10 +18,13 @@ const issueSchema = mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["Bugg-Error", "Feature req", "Documentation req", ]
+        enum: ["Bugg-Error", "Feature req", "Documentation req"]
     },
+    handlingTeam: [{
+        type: mongoose.Schema.ObjectId, ref:"Project"
+    }],
     date: { type: Date, default: DateTime.now() },
-    screenshotNames: [{
+    screenshots: [{
         type: String
     }] 
 });

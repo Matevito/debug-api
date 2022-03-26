@@ -42,11 +42,13 @@ router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
 router.post("/project/:id/issue");
-router.put("/project/:id/isue/:issueID");
-router.delete("/project/:id/isue/:issueID");
 
-router.get("/project/:id/issue/list");
+router.get("/project/:id/issue/list")
+
 router.get("/issue/:id");
+router.put("/issue/:id/take-issue")
+router.put("/issue/:id")
+router.delete("/issue/:id")
 
 // 3.1 Comments routes
 router.get("/issue/:id/comment/list")
