@@ -1,9 +1,11 @@
 const createNotifications = require("../dependencies/createNotifications");
 
 exports.issue_post = (req, res) => {
+    console.log(req.file)
     res.json({
         error: null,
-        msg: "todo..."
+        msg: "todo... issue",
+        data: req.file
     })
 };
 exports.issueList_get  = (req, res) => {

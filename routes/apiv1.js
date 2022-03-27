@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const multer = require("multer");
-const upload = multer({ dest: "./uploads/" });
-
 // controllers
 const authCont = require("../controllers/auth");
 const demoCont = require("../controllers/demo");
@@ -13,8 +10,11 @@ const issueCont = require("../controllers/issue");
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
+//const upload = require("../dependencies/middlewares/upload");
+const multer = require("multer");
+const upload = multer({ dest: 'uploads/'})
 
-    // protection on routes.
+// protection on routes.
 const adminOnly = require("../dependencies/middlewares/adminOnly");
 const admin_teamL = require("../dependencies/middlewares/admin_teamL");
 const inProject = require("../dependencies/middlewares/inProject");
@@ -45,7 +45,7 @@ router.get("/project/list", proyCont.projectList_get);
 router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
-router.post("/project/:id/issue", issueCont.issue_post);
+router.post("/project/:id/issue", upload.single('file'), issueCont.issue_post);
 
 router.get("/project/:id/issue/list", issueCont.issueList_get);
 router.get("/issue/:id", issueCont.issue_get);
