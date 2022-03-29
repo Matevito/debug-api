@@ -10,9 +10,7 @@ const issueCont = require("../controllers/issue");
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
-//const upload = require("../dependencies/middlewares/upload");
-const multer = require("multer");
-const upload = multer({ dest: 'uploads/'})
+const upload = require("../dependencies/middlewares/upload");
 
 // protection on routes.
 const adminOnly = require("../dependencies/middlewares/adminOnly");
@@ -45,7 +43,7 @@ router.get("/project/list", proyCont.projectList_get);
 router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
-router.post("/project/:id/issue", upload.single('file'), issueCont.issue_post);
+router.post("/project/:id/issue", inProject, upload.array('screenshots', 5), issueCont.issue_post);
 
 router.get("/project/:id/issue/list", issueCont.issueList_get);
 router.get("/issue/:id", issueCont.issue_get);

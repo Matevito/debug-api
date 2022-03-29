@@ -1,11 +1,12 @@
+const Issue = require("../models/issue");
+const Project = require("../models/project");
 const createNotifications = require("../dependencies/createNotifications");
 
 exports.issue_post = (req, res) => {
-    console.log(req.file)
     res.json({
         error: null,
         msg: "todo... issue",
-        data: req.file
+        data: req.files
     })
 };
 exports.issueList_get  = (req, res) => {
