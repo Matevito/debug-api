@@ -19,20 +19,34 @@ const getProject = async(users) => {
         team: [ users[1]._id, users[2]._id, users[4]._id],
         teamLeader: users[4]._id
     }
-    const projectObj = new Project(project);
-    
+    const projectObj = new Project(project);    
     const savedProject = await projectObj.save();
-    // code it is not saving it.
     return savedProject
+}
+const getTokens = (users) => {
+    let tokenList = []
+    users.forEach((user) => {
+        const token = get_token(user);
+        tokenList.push({
+            token:token,
+            username: user.username,
+            role: user.role,
+            id: user._id
+        })
+    })
+    return tokenList
+
 }
 exports.getData =  async () => {
     const user_list = await userList()
     const savedUsers = await saveUsers(user_list);
     const project = await getProject(savedUsers);
+    const tokenList = getTokens(savedUsers);
     // todo: get tokens
     return {
         usersList: savedUsers,
-        project: project
+        project: project,
+        tokenList: tokenList
     };
 
 }

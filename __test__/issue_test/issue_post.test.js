@@ -24,6 +24,9 @@ describe("POST /project/:id/issue tests", () => {
         await testDB();
         //todo...
         const dbData = await setupDb.getData();
+        usersLists = dbData.usersList;
+        testProject = dbData.project;
+        tokenList = dbData.tokenList
     })
     // protection
     test.todo("protected route for users not assigned to project");
