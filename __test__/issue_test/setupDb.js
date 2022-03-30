@@ -42,7 +42,7 @@ exports.getData =  async () => {
     const savedUsers = await saveUsers(user_list);
     const project = await getProject(savedUsers);
     const tokenList = getTokens(savedUsers);
-    // todo: get tokens
+    //todo: create some test issues
     return {
         usersList: savedUsers,
         project: project,

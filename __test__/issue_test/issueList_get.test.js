@@ -64,9 +64,9 @@ describe("GET /project/:id/issue/", () => {
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toEqual("send Issue list")
-        expect(res.data.length).toEqual(2)
-        expect(res.data[0].title).toEqual("issue 1")
-        expect(res.data[1].title).toEqual("issue 2")
+        expect(res.body.data.length).toEqual(2)
+        expect(res.body.data[0].title).toEqual("issue 1")
+        expect(res.body.data[1].title).toEqual("issue 2")
     })
     test("admin can access the route", async() => {
         const token = tokenList[0].token;
@@ -79,8 +79,8 @@ describe("GET /project/:id/issue/", () => {
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toEqual("send Issue list")
-        expect(res.data.length).toEqual(2)
-        expect(res.data[0].title).toEqual("issue 1")
-        expect(res.data[1].title).toEqual("issue 2")
+        expect(res.body.data.length).toEqual(2)
+        expect(res.body.data[0].title).toEqual("issue 1")
+        expect(res.body.data[1].title).toEqual("issue 2")
     })
 });

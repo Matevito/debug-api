@@ -81,10 +81,18 @@ exports.issue_post = [
         }
     }
 ];
-exports.issueList_get  = (req, res) => {
+exports.issueList_get  = async (req, res) => {
+    const projId = req.params.id
+    const IssueList = await Issue.find({ project: projId })
+    if (!IssueList) {
+        res.status(400).json({
+            error: "Data not found"
+        })
+    };
     res.json({
         error: null,
-        msg: "todo..."
+        msg: "send Issue list",
+        data: IssueList
     })
 };
 exports.issue_get = (req, res) => {
