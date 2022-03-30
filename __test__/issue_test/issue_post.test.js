@@ -46,7 +46,7 @@ describe("POST /project/:id/issue tests", () => {
     });
 
     // cleaning data
-    test("handle corrupted data", async () => {
+    test.only("handle corrupted data", async () => {
         const form = {
             title: "a title",
             description: " a description",
@@ -58,11 +58,13 @@ describe("POST /project/:id/issue tests", () => {
             .post(`/project/${testProject._id}/issue`)
             .type("form")
             .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
             .set({"auth-token": tokenList[0].token})
 
         expect(res.status).toEqual(400);
         expect(res.body.error).not.toBe(null)
-        expect(res.body.msg).toEqual("Error with parsed form data")
+        expect(res.body.msg).toEqual("error with parsed form data")
         expect(res.body.error.length).toEqual(2)
     });
     // functionality
