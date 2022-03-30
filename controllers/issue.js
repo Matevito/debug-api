@@ -8,6 +8,7 @@ exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
     body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
     body("project").custom(async(value, {req}) => {
+
         const projectExist = await Project.findById(value);
         if (!projectExist) {
             throw new Error("Project id is corrupted")
@@ -42,8 +43,13 @@ exports.issue_post = [
         // 1. attempt to create issue Obj
     
         let screenshots = [];
-        if (!req.files) {
+        if (req.files) {
             //todo: change screenshots value
+            const files = req.files
+            files.forEach((file) => {
+                const path = file.path
+                screenshots.push(path)
+            })
         }
 
         const new_issue = new Issue({
