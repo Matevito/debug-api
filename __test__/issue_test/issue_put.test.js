@@ -35,5 +35,9 @@ describe("PUT /issue/:id tests", () => {
         })
     })
 
-    test.todo("todo tests...")
+    test.todo("protected route for users not into the project");
+    test.todo("admins can edit a project");
+    test.todo("developer cand edit a project");
+    test.todo("project changes are reflected on changelog");
+    test.todo("changelog is displayed correctly")
 })
