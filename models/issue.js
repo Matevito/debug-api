@@ -18,10 +18,10 @@ const issueSchema = mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["Bugg-Error", "Feature req", "Documentation req"]
+        enum: ["bugg-error", "feature req", "documentation req"]
     },
     handlingTeam: [{
-        type: mongoose.Schema.ObjectId, ref:"Project"
+        type: mongoose.Schema.ObjectId, ref:"User"
     }],
     date: { type: Date, default: DateTime.now() },
     screenshots: [{
