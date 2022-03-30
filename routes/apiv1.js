@@ -51,7 +51,7 @@ router.get("/issue/:id", issueCont.issue_get);
 router.put("/issue/:id/take-issue", issueCont.takeIssue_put);
 router.put("/issue/:id", issueCont.issue_put);
 
-router.delete("/issue/:id", issueCont.issue_delete);
+router.delete("/issue/:id", adminOnly ,issueCont.issue_delete);
 
 // 3.1 Comments routes
 router.get("/issue/:id/comment/list")
