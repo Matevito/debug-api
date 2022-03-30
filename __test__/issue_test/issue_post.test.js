@@ -46,7 +46,7 @@ describe("POST /project/:id/issue tests", () => {
     });
 
     // cleaning data
-    test.only("handle corrupted data", async () => {
+    test("handle corrupted data", async () => {
         const form = {
             title: "a title",
             description: " a description",
@@ -80,13 +80,17 @@ describe("POST /project/:id/issue tests", () => {
             .post(`/project/${testProject._id}/issue`)
             .type("form")
             .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
             .set({"auth-token": tokenList[1].token})
-        
+
         const createdIssue = await Issue.find({ title: "a title x2"})
+
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toEqual("Issue created")
-        expect(res.body.data.title).toEqual("a title x2")
+        expect(createdIssue[0].title).toBe("a title x2")
+        expect(res.body.notifications).toEqual(true)
     });
     test("admin not in team succ created an issue", async() => {
         const token = tokenList[0].token;
@@ -102,6 +106,8 @@ describe("POST /project/:id/issue tests", () => {
             .post(`/project/${testProject._id}/issue`)
             .type("form")
             .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
             .set({"auth-token": token})
         
         const createdIssue = await Issue.find({ title: "a title x4"})
@@ -109,7 +115,7 @@ describe("POST /project/:id/issue tests", () => {
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toEqual("Issue created")
-        expect(res.body.data.title).toEqual("a title x4")
-    
+        expect(createdIssue[0].title).toEqual("a title x4")
+        expect(res.body.notifications).toEqual(true)
     });
 });

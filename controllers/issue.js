@@ -39,13 +39,46 @@ exports.issue_post = [
             })
         }
 
-        // attempt to create issue
-        res.json({
-            error: null,
-            msg: "todo... issue",
+        // 1. attempt to create issue Obj
+    
+        let screenshots = [];
+        if (!req.files) {
+            //todo: change screenshots value
+        }
 
-            data: req.files
-        })
+        const new_issue = new Issue({
+            title: req.body.title,
+            description: req.body.description,
+            project: req.body.project,
+            status: "open",
+            priority: req.body.priority,
+            type: req.body.type,
+            screenshots: screenshots,
+        });
+
+        // 2. send notifications to team members and save issue
+        const userId = req.user.id
+        let team = await Project.findById(req.body.project);
+        team = team.team.filter(teamMember => { return teamMember != userId });
+
+        try {
+            const savedIssue = await new_issue.save();
+
+            const message = "a new issue has been created";
+            const ref = "project";
+            const value = savedIssue._id
+            const author = userId;
+            const notifications = createNotifications(team, author, ref, value, message);
+            
+            res.json({
+                error: null,
+                msg: "Issue created",
+                data: savedIssue,
+                notifications
+            })
+        } catch(err) {
+            res.status(400).json({ error: "Error saving data on db"})
+        }
     }
 ];
 exports.issueList_get  = (req, res) => {
