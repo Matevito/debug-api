@@ -176,20 +176,24 @@ exports.issue_put = [
             await Issue.findByIdAndUpdate(issueOnDB._id, editedIssueObj);
             
             // set-up changelog
-            const changeLog = createChangeLog(issueOnDB, editedIssueObj);
-            // condifition. if this happensm then the issue was truly changed, so send notification
-    
-            // set-up notifications
-            const message = `the issue "${issueOnDB.title}" has been edited`
-            const ref = "issue";
-            const value = issueOnDB._id;
-            const author = req.user.id
-            const team = issueOnDB.handlingTeam;
-            const teamLeader = projectObj.teamLeader;
-            if (!team.includes(teamLeader)){
-                team.push(teamLeader)
+            let notifications = false
+            const changeLog = await createChangeLog(issueOnDB, editedIssueObj);
+            
+            /*condifition. if this happens then the issue was truly changed,
+            so send notification. if not, then theres no need to send notifications.*/
+            if (changeLog === true ) {
+                // set-up notifications
+                const message = `the issue "${issueOnDB.title}" has been edited`
+                const ref = "issue";
+                const value = issueOnDB._id;
+                const author = req.user.id
+                const team = issueOnDB.handlingTeam;
+                const teamLeader = projectObj.teamLeader;
+                if (!team.includes(teamLeader)){
+                    team.push(teamLeader)
+                };
+                notifications = createNotifications(team, author, ref, value, message)
             };
-            const notifications = createNotifications(team, author, ref, value, message)
 
             res.status(200).json({
                 error: null,

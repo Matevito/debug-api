@@ -68,8 +68,7 @@ describe("PUT /issue/:id tests", () => {
         expect(res.body.msg).toEqual("error with parsed form data")
         expect(res.body.error.length).toEqual(4)
     });
-
-    test.only("admins can edit a project", async() => {
+    test("admins can edit a project", async() => {
         const form = {
             description: "page does not parse color squema correctly",
             status: "aditional info needed",
@@ -86,7 +85,7 @@ describe("PUT /issue/:id tests", () => {
             .set({"auth-token": token})
         
         const editedIssue = await Issue.findById(issuesList[0]._id)
-        //console.log(res.body)
+
         expect(res.status).toEqual(200)
         expect(res.body.msg).toEqual("issue successfully edited!")
         expect(editedIssue.description).toBe("page does not parse color squema correctly")
@@ -96,11 +95,82 @@ describe("PUT /issue/:id tests", () => {
         expect(res.body.notifications).toBe(true)
         expect(res.body.changeLog).toBe(true)
     });
-    test.todo("developer can edit a project");
+    test("developer can edit a project", async() => {
+        const form = {  
+            description: "docuemntation for the restAPI",
+            status: "under review",
+            priority: "high",
+            type: "documentation req",
+        };
+        const token = tokenList[2].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[1]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
 
-    test.todo("developer cannot put as solved an issue")
-    test.todo("teamL can put as solved an issue");
+        const editedIssue = await Issue.findById(issuesList[1]._id);
 
+        expect(res.status).toEqual(200)
+        expect(res.body.msg).toEqual("issue successfully edited!")
+        expect(editedIssue.description).toBe(form.description)
+        expect(editedIssue.status).toBe(form.status)
+        expect(editedIssue.priority).toBe(form.priority)
+        expect(editedIssue.type).toBe(form.type)
+        expect(res.body.notifications).toBe(true)
+        expect(res.body.changeLog).toBe(true)
+    });
+
+    test("developer cannot put as solved an issue", async() => {
+        const form = {  
+            description: "docuemntation for the restAPI",
+            status: "solved",
+            priority: "high",
+            type: "documentation req",
+        };
+        const token = tokenList[2].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[1]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+
+        expect(res.status).toBe(400)
+        expect(res.body.error).not.toBe(null)
+        expect(res.body.msg).toBe("error with parsed form data")
+        expect(res.body.error.length).toBe(1);
+    })
+    test("teamL can put as solved an issue", async() => {
+        const form = {  
+            description: "docuemntation for the restAPI",
+            status: "solved",
+            priority: "high",
+            type: "documentation req",
+        };
+        const token = tokenList[4].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[1]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        const editedIssue = await Issue.findById(issuesList[1]._id);
+        
+        expect(res.status).toEqual(200)
+        expect(res.body.msg).toEqual("issue successfully edited!")
+        expect(editedIssue.description).toBe(form.description)
+        expect(editedIssue.status).toBe(form.status)
+        expect(editedIssue.priority).toBe(form.priority)
+        expect(editedIssue.type).toBe(form.type)
+        expect(res.body.notifications).toBe(true)
+        expect(res.body.changeLog).toBe(true)
+    });
     test.todo("admin can put as solved an issue");
-
+    test.todo("handles if form is not different from current issue")
 })

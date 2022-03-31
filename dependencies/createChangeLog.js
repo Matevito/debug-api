@@ -51,7 +51,7 @@ const createChanges = (oldObj, newObj) => {
 
 const createChangeLog = (oldObj, newObj) => {
     const changes = createChanges(oldObj, newObj);
-    if (changes.length === false) { 
+    if (changes.length === 0) { 
         return false
     };
     changes.forEach(async(changeLog) => {
