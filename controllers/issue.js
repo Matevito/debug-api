@@ -152,13 +152,35 @@ exports.issue_put = [
         };
 
         // attemp to edit issue ticket
-        // proj = req.params.id
-        // issue = req.issue
-        res.json({
-            error: null,
-            msg: "todo...",
-            data: req.body
-        })
+            // proj = req.params.id
+            // issue = req.issue
+        const projectId = req.params.id;
+        const issueId = req.issue;
+        const issueOnDB = await Issue.findById(issueId);
+        const editedIssueObj = new Issue({
+            _id: issueOnDB._id,
+            title: issueOnDB.title,
+            description: req.body.description,
+            project: issueOnDB.project,
+            status: req.body.status,
+            priority: req.body.priority,
+            type: req.body.type,
+            handlingTeam: issueOnDB.handlingTeam,
+            date: issueOnDB.date,
+            screenshots: issueOnDB.screenshots
+        });
+        try {
+            await Issue.findByIdAndUpdate(issueOnDB._id, editedIssueObj);
+            
+            res.status(200).json({
+                error: null,
+                msg: "issue successfully edited!",
+            })
+        } catch(err) {
+            res.status(400).json({ error: "Error saving data on db"})
+        }
+        
+        
     }
 ]
 exports.issue_delete = (req, res) => {
