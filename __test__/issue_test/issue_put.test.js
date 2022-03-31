@@ -94,7 +94,7 @@ describe("PUT /issue/:id tests", () => {
         expect(editedIssue.priority).toBe("low")
         expect(editedIssue.type).toBe("bugg-error")
         expect(res.body.notifications).toBe(true)
-        expect(res.body.changelog).toBe(true)
+        expect(res.body.changeLog).toBe(true)
     });
     test.todo("developer can edit a project");
 

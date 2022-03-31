@@ -6,7 +6,7 @@ const changeLogSchema = mongoose.Schema({
     property: {
         type: String,
         required: true,
-        enum: ["title", "description", "status", "priority", "type"]
+        enum: ["description", "status", "priority", "type", "handlingTeam"]
     },
     oldValue: { type: String, required: true },
     newValue: { type: String, required: true },

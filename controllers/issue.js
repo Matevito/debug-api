@@ -3,6 +3,7 @@ const Project = require("../models/project");
 
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
+const createChangeLog = require("../dependencies/createChangeLog");
 
 exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
@@ -173,6 +174,11 @@ exports.issue_put = [
 
         try {
             await Issue.findByIdAndUpdate(issueOnDB._id, editedIssueObj);
+            
+            // set-up changelog
+            const changeLog = createChangeLog(issueOnDB, editedIssueObj);
+            // condifition. if this happensm then the issue was truly changed, so send notification
+    
             // set-up notifications
             const message = `the issue "${issueOnDB.title}" has been edited`
             const ref = "issue";
@@ -184,13 +190,12 @@ exports.issue_put = [
                 team.push(teamLeader)
             };
             const notifications = createNotifications(team, author, ref, value, message)
-            // set-up changelog
 
             res.status(200).json({
                 error: null,
                 msg: "issue successfully edited!",
                 notifications,
-                changelog: false
+                changeLog
             })
         } catch(err) {
             res.status(400).json({error: "Error saving data on db"})
