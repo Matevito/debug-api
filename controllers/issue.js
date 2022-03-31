@@ -114,9 +114,12 @@ exports.takeIssue_put = (req, res) => {
     })
 };
 exports.issue_put = (req, res) => {
+    // proj = req.params.id
+    // issue = req.issue
     res.json({
         error: null,
         msg: "todo..."
+
     })
 };
 exports.issue_delete = (req, res) => {

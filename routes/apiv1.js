@@ -16,6 +16,7 @@ const upload = require("../dependencies/middlewares/upload");
 const adminOnly = require("../dependencies/middlewares/adminOnly");
 const admin_teamL = require("../dependencies/middlewares/admin_teamL");
 const inProject = require("../dependencies/middlewares/inProject");
+const setIssueValues = require("../dependencies/middlewares/setIssueValues");
     // sanitize forms
 const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
     
@@ -45,11 +46,11 @@ router.get("/project/:id", inProject, proyCont.project_get);
 // 3. Issues routes.
 router.post("/project/:id/issue", inProject, upload.array('screenshots', 5), issueCont.issue_post);
 
-router.get("/project/:id/issue/list", issueCont.issueList_get);
+router.get("/project/:id/issue/list", inProject, issueCont.issueList_get);
 router.get("/issue/:id", issueCont.issue_get);
 
 router.put("/issue/:id/take-issue", issueCont.takeIssue_put);
-router.put("/issue/:id", issueCont.issue_put);
+router.put("/issue/:id", setIssueValues, inProject, issueCont.issue_put);
 
 router.delete("/issue/:id", adminOnly ,issueCont.issue_delete);
 

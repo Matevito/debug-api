@@ -35,9 +35,19 @@ describe("PUT /issue/:id tests", () => {
         })
     })
 
-    test.todo("protected route for users not into the project");
+    test("protected route for users not into the project", async () => {
+        const token = tokenList[3].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[0]._id}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        console.log(res.body)
+    });
+    
     test.todo("admins can edit a project");
     test.todo("developer cand edit a project");
+
     test.todo("project changes are reflected on changelog");
     test.todo("changelog is displayed correctly")
 })
