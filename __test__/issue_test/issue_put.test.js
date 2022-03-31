@@ -39,15 +39,59 @@ describe("PUT /issue/:id tests", () => {
         const token = tokenList[3].token;
         const res = await request(app)
             .put(`/issue/${issuesList[0]._id}`)
+            .type("form")
+            .send({})
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": token})
+        
+        expect(res.status).toEqual(401);
+        expect(res.body.error).toEqual("Access denied")
+    });
+    test("handles errors in parsed form data", async() => {
+        const form = {
+            description: "",
+            status: "aditional inFo needed",
+            priority: "not relevant",
+            type: "Bugg-error",
+        }
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[0]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        expect(res.status).toEqual(400);
+        expect(res.body.msg).toEqual("error with parsed form data")
+        expect(res.body.error.length).toEqual(4)
+    });
+
+    test.only("admins can edit a project", async() => {
+        const form = {
+            description: "page does not parse color squema correctly",
+            status: "aditional info needed",
+            priority: "low",
+            type: "bugg-error",
+        }
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .put(`/issue/${issuesList[0]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
         console.log(res.body)
     });
-    
-    test.todo("admins can edit a project");
-    test.todo("developer cand edit a project");
+    test.todo("developer can edit a project");
 
-    test.todo("project changes are reflected on changelog");
-    test.todo("changelog is displayed correctly")
+    test.todo("developer cannot put as solved an issue")
+    test.todo("teamL can put as solved an issue");
+
+    test.todo("admin can put as solved an issue");
+
 })

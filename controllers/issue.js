@@ -102,6 +102,7 @@ exports.issueList_get  = async (req, res) => {
     })
 };
 exports.issue_get = (req, res) => {
+    // send changelog
     res.json({
         error: null,
         msg: "todo..."
@@ -113,15 +114,53 @@ exports.takeIssue_put = (req, res) => {
         msg: "todo..."
     })
 };
-exports.issue_put = (req, res) => {
-    // proj = req.params.id
-    // issue = req.issue
-    res.json({
-        error: null,
-        msg: "todo..."
+exports.issue_put = [
+    body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
+    body("status").custom((value, { req }) => {
+        const validFormat = ["open", "aditional info needed","in progress", "under review", "solved"]
+        if (!validFormat.includes(value)) {
+            throw new Error("status value is corrupted")
+        }
+        const userRole = req.user.role;
+        if (userRole === "Developer" && value === "solved") {
+            throw new Error("developer does not have auth to change this value")
+        }
 
-    })
-};
+        return true
+    }).escape(),
+    body("priority").custom((value) => {
+        const validFormat = ["low", "mid", "high"];
+        if (!validFormat.includes(value)){
+            throw new Error("priority value is corrupted")
+        }
+        return true
+    }).escape(),
+    body("type").custom((value) => {
+        const validFormat = ["bugg-error", "feature req", "documentation req"];
+        if (!validFormat.includes(value)) {
+            throw new Error("type value is corrupted")
+        }
+        return true;
+    }).escape(),
+    async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                msg: "error with parsed form data",
+                error: errors.array()
+            })
+        };
+
+        // attemp to edit issue ticket
+        // proj = req.params.id
+        // issue = req.issue
+        res.json({
+            error: null,
+            msg: "todo...",
+            data: req.body
+        })
+    }
+]
 exports.issue_delete = (req, res) => {
     res.json({
         error: null,
