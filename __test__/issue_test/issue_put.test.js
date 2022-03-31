@@ -86,13 +86,15 @@ describe("PUT /issue/:id tests", () => {
             .set({"auth-token": token})
         
         const editedIssue = await Issue.findById(issuesList[0]._id)
-        
+        //console.log(res.body)
         expect(res.status).toEqual(200)
         expect(res.body.msg).toEqual("issue successfully edited!")
         expect(editedIssue.description).toBe("page does not parse color squema correctly")
         expect(editedIssue.status).toBe("aditional info needed")
         expect(editedIssue.priority).toBe("low")
         expect(editedIssue.type).toBe("bugg-error")
+        expect(res.body.notifications).toBe(true)
+        expect(res.body.changelog).toBe(true)
     });
     test.todo("developer can edit a project");
 

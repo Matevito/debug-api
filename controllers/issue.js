@@ -155,6 +155,7 @@ exports.issue_put = [
             // proj = req.params.id
             // issue = req.issue
         const projectId = req.params.id;
+        const projectObj = await Project.findById(projectId);
         const issueId = req.issue;
         const issueOnDB = await Issue.findById(issueId);
         const editedIssueObj = new Issue({
@@ -169,15 +170,30 @@ exports.issue_put = [
             date: issueOnDB.date,
             screenshots: issueOnDB.screenshots
         });
+
         try {
             await Issue.findByIdAndUpdate(issueOnDB._id, editedIssueObj);
-            
+            // set-up notifications
+            const message = `the issue "${issueOnDB.title}" has been edited`
+            const ref = "issue";
+            const value = issueOnDB._id;
+            const author = req.user.id
+            const team = issueOnDB.handlingTeam;
+            const teamLeader = projectObj.teamLeader;
+            if (!team.includes(teamLeader)){
+                team.push(teamLeader)
+            };
+            const notifications = createNotifications(team, author, ref, value, message)
+            // set-up changelog
+
             res.status(200).json({
                 error: null,
                 msg: "issue successfully edited!",
+                notifications,
+                changelog: false
             })
         } catch(err) {
-            res.status(400).json({ error: "Error saving data on db"})
+            res.status(400).json({error: "Error saving data on db"})
         }
         
         
