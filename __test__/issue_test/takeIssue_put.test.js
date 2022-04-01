@@ -36,7 +36,7 @@ describe("PUT /issue/:id/take-issue", () => {
         })
     })
 
-    test.only("route protected from user not in the proj team", async() => {
+    test("route protected from user not in the proj team", async() => {
         const token = tokenList[3].token;
 
         const res = await request(app)
@@ -50,7 +50,20 @@ describe("PUT /issue/:id/take-issue", () => {
         expect(res.status).toEqual(401);
         expect(res.body.error).toBe("Access denied");
     });
-    test.todo("route handles a user part of the issue handling-team");
+    test.only("route handles a user part of the issue handling-team", async () => {
+        const token = tokenList[2].token;
+
+        const res = await request(app)
+            .put(`/issue/${issuesList[2]._id}/take-issue`)
+            .type("form")
+            .send({})
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        expect(res.status).toEqual(400);
+        expect(res.body.error).toEqual("User already part of the team")
+    });
 
     test.todo("route adds to the issue team a developer");
     test.todo("route handles a team with users already in it")

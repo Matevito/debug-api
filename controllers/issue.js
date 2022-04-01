@@ -109,11 +109,33 @@ exports.issue_get = (req, res) => {
         msg: "todo..."
     })
 };
-exports.takeIssue_put = (req, res) => {
-    res.json({
-        error: null,
-        msg: "TODO: take issue"
-    })
+exports.takeIssue_put = async (req, res) => {
+    const currentIssue = await Issue.findById(req.issue);
+    if (!currentIssue) {
+        res.json({
+            error: "error fetching issue data"
+        })
+    }
+    const currentTeam = currentIssue.handlingTeam;
+    const userId = req.user.id;
+
+    // check if user is part of the team
+    if (currentTeam.includes(userId)){
+        return res.status(400).json({
+            error: "User already part of the team"
+        })
+    }
+
+    try {
+        res.json({
+            error: null,
+            msg: "TODO: take issue"
+        })
+    } catch (err) {
+        res.status(400).json({
+            error: "error saving data on db"
+        })
+    }
 };
 
 exports.leaveIssue_put = (req, res) => {
