@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/", api);
 
 
-describe("PUT /issue/:id/take-issue", () => {
+describe("PUT /issue/:id/leave-issue", () => {
     let usersList;
     let testProject;
     let tokenList;
@@ -35,10 +35,8 @@ describe("PUT /issue/:id/take-issue", () => {
             await issue.save()
         })
     })
-
     test.todo("route protected from user not in the proj team");
-    test.todo("route handles a user part of the issue handling-team");
+    test.todo("route handles a user not part of the issue handling-team");
 
-    test.todo("route adds to the issue team a developer");
-    test.todo("route handles a team with users already in it")
+    test.todo("route removes successfully a developer from the team");
 })
