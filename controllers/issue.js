@@ -179,7 +179,25 @@ exports.takeIssue_put = async (req, res) => {
     }
 };
 
-exports.leaveIssue_put = (req, res) => {
+exports.leaveIssue_put = async (req, res) => {
+    const currentIssue = await Issue.findById(req.issue);
+    if (!currentIssue) {
+        res.json({
+            error: "error fetching issue data"
+        })
+    };
+    const userId = req.user.id;
+    // check if user is part of the team
+    if (!currentIssue.handlingTeam.includes(userId)){
+        return res.status(400).json({
+            error: "User is not part of the issue-team"
+        })
+    }
+
+    //create new issue with edited team
+    let currentTeam = currentIssue.handlingTeam.filter(() => true);
+
+    // attempt to save edited issue
     res.json({
         error: null,
         msg: "todo leave-issue"

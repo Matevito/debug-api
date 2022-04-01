@@ -50,7 +50,7 @@ router.get("/project/:id/issue/list", inProject, issueCont.issueList_get);
 router.get("/issue/:id", issueCont.issue_get);
 
 router.put("/issue/:id/take-issue", setIssueValues, inProject, issueCont.takeIssue_put);
-router.put("/issue/:id/leave-issue")
+router.put("/issue/:id/leave-issue", setIssueValues, inProject, issueCont.leaveIssue_put);
 router.put("/issue/:id", setIssueValues, inProject, issueCont.issue_put);
 
 router.delete("/issue/:id", adminOnly ,issueCont.issue_delete);

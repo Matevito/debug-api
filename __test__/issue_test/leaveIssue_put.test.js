@@ -35,8 +35,35 @@ describe("PUT /issue/:id/leave-issue", () => {
             await issue.save()
         })
     })
-    test.todo("route protected from user not in the proj team");
-    test.todo("route handles a user not part of the issue handling-team");
+    test("route protected from user not in the proj team", async() => {
+        const token = tokenList[3].token;
 
-    test.todo("route removes successfully a developer from the team");
+        const res = await request(app)
+            .put(`/issue/${issuesList[0]._id}/leave-issue`)
+            .type("form")
+            .send({})
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        expect(res.status).toEqual(401);
+        expect(res.body.error).toBe("Access denied");
+    });
+    test.only("route handles a user not part of the issue handling-team", async() => {
+        const token = tokenList[2].token;
+
+        const res = await request(app)
+            .put(`/issue/${issuesList[1]._id}/leave-issue`)
+            .type("form")
+            .send({})
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        console.log(res.body)
+        expect(res.status).toEqual(400);
+        expect(res.body.error).toBe("User is not part of the issue-team");
+    });
+
+    test.todo("route removes successfully a user from the team");
 })
