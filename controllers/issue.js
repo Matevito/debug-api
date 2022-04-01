@@ -112,9 +112,16 @@ exports.issue_get = (req, res) => {
 exports.takeIssue_put = (req, res) => {
     res.json({
         error: null,
-        msg: "todo..."
+        msg: "TODO: take issue"
     })
 };
+
+exports.leaveIssue_put = (req, res) => {
+    res.json({
+        error: null,
+        msg: "todo leave-issue"
+    })
+} 
 exports.issue_put = [
     body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
     body("status").custom((value, { req }) => {
