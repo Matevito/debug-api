@@ -122,7 +122,6 @@ describe("PUT /issue/:id tests", () => {
         expect(res.body.notifications).toBe(true)
         expect(res.body.changeLog).toBe(true)
     });
-
     test("developer cannot put as solved an issue", async() => {
         const form = {  
             description: "docuemntation for the restAPI",
@@ -171,6 +170,55 @@ describe("PUT /issue/:id tests", () => {
         expect(res.body.notifications).toBe(true)
         expect(res.body.changeLog).toBe(true)
     });
-    test.todo("admin can put as solved an issue");
-    test.todo("handles if form is not different from current issue")
+    test("admin can put as solved an issue", async() => {
+        const form = {  
+            description: "documentation for frontEnd",
+            status: "solved",
+            priority: "high",
+            type: "documentation req",
+        };
+        const token = tokenList[0].token;
+
+        const res = await request(app)
+            .put(`/issue/${issuesList[2]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        const editedIssue = await Issue.findById(issuesList[2]._id);
+
+        expect(res.status).toEqual(200)
+        expect(res.body.msg).toEqual("issue successfully edited!")
+        expect(editedIssue.description).toBe(form.description)
+        expect(editedIssue.status).toBe(form.status)
+        expect(editedIssue.priority).toBe(form.priority)
+        expect(editedIssue.type).toBe(form.type)
+        expect(res.body.notifications).toBe(true)
+        expect(res.body.changeLog).toBe(true)
+    });
+    test("handles if form is not different from current issue", async() => {
+        const issueToTest = await Issue.findById(issuesList[2]._id);
+        const token = tokenList[0].token;
+        const form = {
+            description: issueToTest.description,
+            status: issueToTest.status,
+            priority: issueToTest.priority,
+            type: issueToTest.type,
+        };
+        
+        const res = await request(app)
+            .put(`/issue/${issuesList[2]._id}`)
+            .type("form")
+            .send(form)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        expect(res.status).toBe(200);
+        expect(res.body.error).toBe(null)
+        expect(res.body.notifications).toBe(false);
+        expect(res.body.changeLog).toBe(false)
+    })
 })
