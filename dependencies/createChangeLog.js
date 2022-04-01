@@ -36,13 +36,20 @@ const createChanges = (oldObj, newObj) => {
         changes.push(change)
     };
     //compare array
-    const oldTeam = oldObj.handlingTeam.sort().toString();
-    const newTeam = newObj.handlingTeam.sort().toString();
+    let oldTeam = oldObj.handlingTeam.sort().toString();
+    let newTeam = newObj.handlingTeam.sort().toString();
+    
     if (oldTeam !== newTeam) {
+        if (oldTeam === ""){
+           oldTeam = "[]"
+        };
+        if (newTeam === "") {
+            newTeam = "[]"
+        }
         const change = {
             property: "handlingTeam",
-            oldValue: oldObj.handlingTeam,
-            newValue: newObj.handlingTeam
+            oldValue: oldTeam,
+            newValue: newTeam
         };
         changes.push(change)
     };
@@ -54,6 +61,7 @@ const createChangeLog = (oldObj, newObj) => {
     if (changes.length === 0) { 
         return false
     };
+    //console.log(changes)
     changes.forEach(async(changeLog) => {
         const new_changeLog = new ChangeLog({
             issue: oldObj._id,

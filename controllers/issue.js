@@ -116,11 +116,11 @@ exports.takeIssue_put = async (req, res) => {
             error: "error fetching issue data"
         })
     }
-    let currentTeam = currentIssue.handlingTeam;
+    // copy array
+    let currentTeam = currentIssue.handlingTeam.filter(() => true);
     const userId = req.user.id;
-
     // check if user is part of the team
-    if (currentTeam.includes(userId)){
+    if (currentIssue.handlingTeam.includes(userId)){
         return res.status(400).json({
             error: "User already part of the team"
         })
@@ -141,11 +141,36 @@ exports.takeIssue_put = async (req, res) => {
         handlingTeam: currentTeam,
     })
     // attempt to save changed issue
+    const IssueProject = await Project.findById(req.params.id);
+    if (!IssueProject) {
+        res.status(400).json({
+            error: "error fetching data on db"
+        })
+    };
     try {
         const savedIssue = await Issue.findByIdAndUpdate(currentIssue._id, editedIssueObj)
+        
+        // create notifications and changelog
+        let notifications = false;
+        const changeLog = await createChangeLog(currentIssue, editedIssueObj);
+        if (changeLog === true) {
+            const message = `the issue ${currentIssue.title} team has been edited`;
+            const ref = "issue";
+            const value = currentIssue._id;
+            const author = req.user.id;
+            let team = currentIssue.handlingTeam;
+            const teamLeader = IssueProject.teamLeader;
+            if (!team.includes(teamLeader)){
+                team.push(teamLeader)
+            };
+            notifications = createNotifications(team, author, ref, value, message)
+        };
+
         res.json({
             error: null,
             msg: "User added to handlingTeam successfully",
+            notifications,
+            changeLog
         })
     } catch (err) {
         res.status(400).json({
@@ -232,7 +257,7 @@ exports.issue_put = [
                 const ref = "issue";
                 const value = issueOnDB._id;
                 const author = req.user.id
-                const team = issueOnDB.handlingTeam;
+                let team = issueOnDB.handlingTeam;
                 const teamLeader = projectObj.teamLeader;
                 if (!team.includes(teamLeader)){
                     team.push(teamLeader)
