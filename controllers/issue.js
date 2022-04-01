@@ -116,7 +116,7 @@ exports.takeIssue_put = async (req, res) => {
             error: "error fetching issue data"
         })
     }
-    const currentTeam = currentIssue.handlingTeam;
+    let currentTeam = currentIssue.handlingTeam;
     const userId = req.user.id;
 
     // check if user is part of the team
@@ -126,10 +126,26 @@ exports.takeIssue_put = async (req, res) => {
         })
     }
 
+    // build new issue obj
+    currentTeam.push(userId);
+    const editedIssueObj = new Issue({
+        _id: currentIssue._id,
+        title: currentIssue.title,
+        description: currentIssue.description,
+        project: currentIssue.project,
+        status: currentIssue.status,
+        priority: currentIssue.priority,
+        type: currentIssue.type,
+        date: currentIssue.date,
+        screenshots: currentIssue.screenshots,
+        handlingTeam: currentTeam,
+    })
+    // attempt to save changed issue
     try {
+        const savedIssue = await Issue.findByIdAndUpdate(currentIssue._id, editedIssueObj)
         res.json({
             error: null,
-            msg: "TODO: take issue"
+            msg: "User added to handlingTeam successfully",
         })
     } catch (err) {
         res.status(400).json({

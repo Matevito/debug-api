@@ -50,7 +50,7 @@ describe("PUT /issue/:id/take-issue", () => {
         expect(res.status).toEqual(401);
         expect(res.body.error).toBe("Access denied");
     });
-    test.only("route handles a user part of the issue handling-team", async () => {
+    test("route handles a user part of the issue handling-team", async () => {
         const token = tokenList[2].token;
 
         const res = await request(app)
@@ -65,6 +65,28 @@ describe("PUT /issue/:id/take-issue", () => {
         expect(res.body.error).toEqual("User already part of the team")
     });
 
-    test.todo("route adds to the issue team a developer");
+    test.only("route adds to the issue team a developer", async() => {
+        const token = tokenList[1].token;
+
+        const res = await request(app)
+            .put(`/issue/${issuesList[1]._id}/take-issue`)
+            .type("form")
+            .send({})
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+        
+        const editedIssue = await Issue.findById(issuesList[1]._id);
+        
+        expect(res.status).toBe(200);
+        expect(res.body.error).toBe(null);
+        expect(res.body.msg).toBe("User added to handlingTeam successfully");
+        expect(editedIssue.handlingTeam.length).toBe(1);
+        expect(editedIssue.handlingTeam[0]).toEqual(usersList[1]._id);
+        /*
+        expect(res.body.notifications).toBe(true);
+        expect(res.body.changeLog).toBe(true);
+        */
+    });
     test.todo("route handles a team with users already in it")
 })
