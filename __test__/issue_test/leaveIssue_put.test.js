@@ -49,7 +49,7 @@ describe("PUT /issue/:id/leave-issue", () => {
         expect(res.status).toEqual(401);
         expect(res.body.error).toBe("Access denied");
     });
-    test.only("route handles a user not part of the issue handling-team", async() => {
+    test("route handles a user not part of the issue handling-team", async() => {
         const token = tokenList[2].token;
 
         const res = await request(app)
@@ -60,10 +60,27 @@ describe("PUT /issue/:id/leave-issue", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
 
-        console.log(res.body)
         expect(res.status).toEqual(400);
         expect(res.body.error).toBe("User is not part of the issue-team");
     });
 
-    test.todo("route removes successfully a user from the team");
+    test("route removes successfully a user from the team", async() => {
+        const token = tokenList[2].token
+        const res = await request(app)
+            .put(`/issue/${issuesList[2]._id}/leave-issue`)
+            .type("form")
+            .send({})
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        const editedIssue = await Issue.findById(issuesList[2].id)
+
+        expect(res.status).toBe(200);
+        expect(res.body.error).toBe(null);
+        expect(res.body.msg).toBe("User successfully removed from issue-team");
+        expect(editedIssue.handlingTeam.length).toBe(0);
+        expect(res.body.notifications).toBe(true);
+        expect(res.body.changeLog).toBe(true);
+    });
 })

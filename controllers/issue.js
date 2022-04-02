@@ -4,6 +4,7 @@ const Project = require("../models/project");
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
 const createChangeLog = require("../dependencies/createChangeLog");
+const { findByIdAndUpdate } = require("../models/project");
 
 exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
@@ -195,13 +196,60 @@ exports.leaveIssue_put = async (req, res) => {
     }
 
     //create new issue with edited team
-    let currentTeam = currentIssue.handlingTeam.filter(() => true);
+    const currentTeam = currentIssue.handlingTeam.filter(() => true);
+    const newTeam = currentTeam.filter((id) => id != userId);
+
+    const editedIssueObj = new Issue({
+        _id: currentIssue._id,
+        title: currentIssue.title,
+        description: currentIssue.description,
+        project: currentIssue.project,
+        status: currentIssue.status,
+        priority: currentIssue.priority,
+        type: currentIssue.type,
+        date: currentIssue.date,
+        screenshots: currentIssue.screenshots,
+        handlingTeam: newTeam,
+    })
 
     // attempt to save edited issue
-    res.json({
-        error: null,
-        msg: "todo leave-issue"
-    })
+    const IssueProject = await Project.findById(req.params.id);
+    if (!IssueProject) {
+        res.status(400).json({
+            error: "error fetching data on db"
+        })
+    };
+    try {
+        await Issue.findByIdAndUpdate(currentIssue._id, editedIssueObj)
+
+        let notifications = false;
+        const changeLog = createChangeLog(currentIssue, editedIssueObj);
+        if (changeLog === true) {
+            const message = `the issue ${currentIssue.title} team has been edited`;
+            const ref = "issue";
+            const value = currentIssue._id;
+            const author = req.user.id;
+            let team = editedIssueObj.handlingTeam;
+            const teamLeader = IssueProject.teamLeader;
+            if (!team.includes(teamLeader)){
+                team.push(teamLeader);
+            };
+            notifications = createNotifications(team, author, ref, value, message)
+        }
+        // create notifications and changeLog
+        res.json({
+            error: null,
+            msg: "User successfully removed from issue-team",
+            notifications,
+            changeLog
+        })
+
+    } catch(err) {
+        res.status(400).json({
+            error: "error saving data on db"
+        })
+    }
+    
 } 
 exports.issue_put = [
     body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
