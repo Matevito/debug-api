@@ -45,14 +45,14 @@ router.get("/project/:id", inProject, proyCont.project_get);
 
 // 3. Issues routes.
 router.post("/project/:id/issue", inProject, upload.array('screenshots', 5), issueCont.issue_post);
-
 router.get("/project/:id/issue/list", inProject, issueCont.issueList_get);
-router.get("/issue/:id", setIssueValues, inProject, issueCont.issue_get);
 
+router.get("/issue/:id", setIssueValues, inProject, issueCont.issue_get);
 router.put("/issue/:id/take-issue", setIssueValues, inProject, issueCont.takeIssue_put);
 router.put("/issue/:id/leave-issue", setIssueValues, inProject, issueCont.leaveIssue_put);
 router.put("/issue/:id", setIssueValues, inProject, issueCont.issue_put);
 
+//todo when checked if changelog and comments are displayed correctly
 router.delete("/issue/:id", setIssueValues, adminOnly ,issueCont.issue_delete);
 
 // 3.1 Comments routes

@@ -209,7 +209,6 @@ exports.takeIssue_put = async (req, res) => {
         })
     }
 };
-
 exports.leaveIssue_put = async (req, res) => {
     const currentIssue = await Issue.findById(req.issue);
     if (!currentIssue) {
@@ -372,9 +371,34 @@ exports.issue_put = [
         }
     }
 ]
-exports.issue_delete = (req, res) => {
-    res.json({
-        error: null,
-        msg: "todo..."
-    })
+exports.issue_delete = async (req, res) => {
+    const Issue = await Issue.findById(req.issue);
+    if (!Issue) {
+        return res.status(400).json({
+            error: "Issue not found on db"
+        })
+    }
+    const IssueComments = await Comment.find({issue: req.issue});
+    if (!issueComments) {
+        return res.status(400).json({
+            error: "Issue comments not found on db"
+        })
+    }
+    const ChangeLog = await ChangeLog.find({issue: req.issue});
+    if (!changeLog) {
+        return res.status(400).json({
+            error: "Issue change-log not found on db"
+        })
+    }
+    try {
+        // atempt to delete issue and related data to it
+        res.json({
+            error: null,
+            msg: "Issue deleted successfully",
+        })
+    } catch (err){ 
+        res.status(400).json({
+            error: "error deleting data on db"
+        })
+    }
 };

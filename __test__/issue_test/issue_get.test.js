@@ -80,15 +80,4 @@ describe("GET /issue/:id/", () => {
         expect(res.body.data).toHaveProperty("changeLog")
         expect(res.body.data).toHaveProperty("comments")
     });
-    test.only("handles user of the project, but not of the ht (has access)", async() => {
-        const token = tokenList[2].token;
-        const issueId = issuesList[1]._id;
-        const res = await request(app)
-            .get(`/issue/${issueId}`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set({"auth-token": token});
-        console.log(tokenList[2])
-        console.log(res.body)
-    });
 })
