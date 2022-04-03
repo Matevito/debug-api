@@ -1,5 +1,7 @@
 const Issue = require("../models/issue");
 const Project = require("../models/project");
+const ChangeLog = require("../models/changeLog");
+const Comment = require("../models/comment")
 
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
@@ -111,11 +113,31 @@ exports.issue_get = async(req, res) => {
         })
     }
 
-    // get changelog and messaged of issue
+    // get changelog and comments of issue
+    const issueChangeLog = await ChangeLog.find({ issue: issue._id});
+    if (!issueChangeLog) {
+        return res.status(400).json({
+            error: "Changelog of issue not found"
+        })
+    };
+
+    const issueComments = await Comment.find({ issue: issue._id});
+    if (!issueComments) {
+        return res.status(400).json({
+            error: "Comments of issue not found on db"
+        })
+    };
+
+    // form data obj and attemp to send res
+    const data  = {
+        issue,
+        changeLog: issueChangeLog,
+        comments: issueComments
+    }
     res.json({
         error: null,
-        msg: "todo...",
-        data: issue
+        msg: "Issue sent successfully!",
+        data
     })
 };
 exports.takeIssue_put = async (req, res) => {

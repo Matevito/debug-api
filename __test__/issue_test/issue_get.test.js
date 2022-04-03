@@ -64,6 +64,31 @@ describe("GET /issue/:id/", () => {
         expect(res.body.error).toBe("Issue not found on db")
     })
     // issues on db index = [1,2]
-    test.todo("handles developer on the team");
-    test.todo("handles user of the project, but not of the ht (has access)");
+    test("handles developer on the team", async() => {
+        const token = tokenList[2].token;
+        const issueId = issuesList[1]._id;
+        const res = await request(app)
+            .get(`/issue/${issueId}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        expect(res.status).toBe(200)
+        expect(res.body.error).toBe(null)
+        expect(res.body.msg).toBe("Issue sent successfully!")
+        expect(res.body.data.issue._id == issueId).toBe(true)
+        expect(res.body.data).toHaveProperty("changeLog")
+        expect(res.body.data).toHaveProperty("comments")
+    });
+    test.only("handles user of the project, but not of the ht (has access)", async() => {
+        const token = tokenList[2].token;
+        const issueId = issuesList[1]._id;
+        const res = await request(app)
+            .get(`/issue/${issueId}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+        console.log(tokenList[2])
+        console.log(res.body)
+    });
 })
