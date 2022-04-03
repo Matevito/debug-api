@@ -9,7 +9,7 @@
     "test": "jest --forceExit",
     "devtest": "jest --forceExit --detectOpenHandles",
     "test_coverage": "jest --forceExit --detectOpenHandles --coverage",
-    "testone": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/issue_test/leaveIssue_put.test.js"
+    "testone": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/issue_test/issue_get.test.js"
   },
   "engines": {
     "node": "17.3.0"

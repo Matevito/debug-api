@@ -4,7 +4,6 @@ const Project = require("../models/project");
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
 const createChangeLog = require("../dependencies/createChangeLog");
-const { findByIdAndUpdate } = require("../models/project");
 
 exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
@@ -103,11 +102,20 @@ exports.issueList_get  = async (req, res) => {
         data: IssueList
     })
 };
-exports.issue_get = (req, res) => {
-    // send changelog
+exports.issue_get = async(req, res) => {
+    // this is done too on the middleware that sets proj id and issue id values on req
+    const issue = await Issue.findById(req.issue);
+    if (!issue) {
+        return res.status(400).json({
+            error: "Issue not found on db"
+        })
+    }
+
+    // get changelog and messaged of issue
     res.json({
         error: null,
-        msg: "todo..."
+        msg: "todo...",
+        data: issue
     })
 };
 exports.takeIssue_put = async (req, res) => {
@@ -340,8 +348,6 @@ exports.issue_put = [
         } catch(err) {
             res.status(400).json({error: "Error saving data on db"})
         }
-        
-        
     }
 ]
 exports.issue_delete = (req, res) => {

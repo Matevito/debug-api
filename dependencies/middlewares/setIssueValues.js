@@ -5,8 +5,8 @@ const setIssueValues = async(req, res, next) => {
     
     const issueInDb = await Issue.findById(issueId);
     if (!issueInDb) {
-        res.json({
-            error: "Project of issue not found"
+        return res.status(400).json({
+            error: "Issue not found on db"
         })
     };
     req.params.id = issueInDb.project;
