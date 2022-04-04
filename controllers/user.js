@@ -2,6 +2,8 @@ const Issue = require("../models/issue");
 const Project = require("../models/project");
 const User = require("../models/user")
 
+const { body, validationResult } = require("express-validator");
+
 exports.userList_get = async(req, res) => {
     const userList = await User.find({})
     if (!userList) {
@@ -60,6 +62,12 @@ exports.user_get = async(req, res) => {
         }
     });
 };
-exports.user_put = (req, res) => {
-
-};
+exports.user_put = [
+    body("role").escape(),
+    async(req, res) => {
+        res.json({
+            error: null,
+            msg: "todo-- userput"
+        })
+    }
+]
