@@ -3,6 +3,7 @@ const Project = require("../models/project");
 const User = require("../models/user")
 
 const { body, validationResult } = require("express-validator");
+const { findByIdAndUpdate } = require("../models/issue");
 
 exports.userList_get = async(req, res) => {
     const userList = await User.find({})
@@ -62,12 +63,53 @@ exports.user_get = async(req, res) => {
         }
     });
 };
-exports.user_put = [
-    body("role").escape(),
-    async(req, res) => {
+exports.userToAdmin_put = async(req, res) => {
+    // Check if user is an admin on db
+    const reqUser = await User.findById(req.user.id);
+    if (!reqUser) {
+        return res.status(401).json({
+            error: "Access denied"
+        })
+    };
+    if (reqUser.role !== "Admin") {
+        return res.status(401).json({
+            error: "Access denied"
+        })
+    };
+    // attempt to make a new user an admin
+    const userToEdit = await User.findById(req.params.id);
+    if (!userToEdit) {
+        return res.status(400).json({
+            error: "error with user data on db"
+        })
+    };
+    if (userToEdit.role === "Admin"){
+        return res.status(400).json({
+            error: "user is already an admin"
+        })
+    };
+
+    const editedUser = new User({
+        _id: userToEdit._id,
+        role: "Admin",
+        username: userToEdit.username,
+        email: userToEdit.email,
+        password: userToEdit.password
+    })
+
+    try {
+        const savedNewAdmin = await findByIdAndUpdate(userToEdit._id, editedUser);
         res.json({
             error: null,
-            msg: "todo-- userput"
+            msg: "user bacame an admin successfully",
+            data: {
+                username: savedNewAdmin.username,
+                role: savedNewAdmin.role,
+                _id: savedNewAdmin._id
+            }
         })
+    } catch (err) {
+
     }
-]
+    
+}

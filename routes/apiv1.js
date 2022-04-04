@@ -67,7 +67,7 @@ router.get("/user/list", userCont.userList_get);
 router.get("/user/:id", userCont.user_get);
     // edit user data - only for admins
     // /user/:ID/status ? only for admins?
-router.put("/user/:id", adminOnly, userCont.user_put);
+router.put("/user/:id/make-admin", adminOnly, userCont.userToAdmin_put);
 
 // todo: other type of callbacks
 router.get("/notification/list", notCont.notificationList_get);
