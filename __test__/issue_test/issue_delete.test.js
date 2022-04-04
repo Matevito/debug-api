@@ -76,7 +76,7 @@ describe("DELETE /issue/:id", () => {
         expect(res.body.error).toBe("Access denied")
     });
     // index = 0
-    test.only("handles a project that no longer exist on db", async() => {
+    test("handles a project that no longer exist on db", async() => {
         const token = tokenList[0].token;
         const issueId = issuesList[0]._id
         const res = await request(app)
@@ -97,8 +97,12 @@ describe("DELETE /issue/:id", () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": token});
-
-        // todo....
-        console.log(res.body)
+        const issuesOnDB = await Issue.find({})
+        
+        expect(res.status).toBe(200);
+        expect(res.body.error).toBe(null);
+        expect(res.body.msg).toBe("Issue deleted successfully");
+        expect(issuesOnDB.length).toBe(1);
+        expect(issuesOnDB[0].title).toBe("issue 2")
     });
 })

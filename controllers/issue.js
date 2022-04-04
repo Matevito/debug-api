@@ -374,6 +374,7 @@ exports.issue_put = [
 exports.issue_delete = async (req, res) => {
     // 1. get data to delete
     const issue = await Issue.findById(req.issue);
+    
     if (!issue) {
         return res.status(400).json({
             error: "Issue not found on db"
@@ -394,6 +395,13 @@ exports.issue_delete = async (req, res) => {
     // 2. delete and send response
     try {
         // atempt to delete issue and related data to it
+        await Issue.findByIdAndRemove(issue._id);
+        issueComments.forEach(async(comment) => {
+            await Comment.findByIdAndRemove(comment._id);
+        })
+        issueChangeLog.forEach(async(log) => {
+            await ChangeLog.findByIdAndRemove(log._id);
+        });
         res.json({
             error: null,
             msg: "Issue deleted successfully",
