@@ -7,6 +7,8 @@ const demoCont = require("../controllers/demo");
 const proyCont = require("../controllers/project");
 const issueCont = require("../controllers/issue");
 const commentCont = require("../controllers/comment");
+const userCont = require("../controllers/user");
+const notCont = require("../controllers/notification");
 
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
@@ -61,14 +63,14 @@ router.delete("/issue/:id", setIssueValues, adminOnly ,issueCont.issue_delete);
 router.post("/issue/:id/comment", setIssueValues, inProject, upload.array('screenshots', 5), commentCont.comment_post)
 
 // 4. User routes
-router.get("/user/list");
-router.get("/user/:id")
+router.get("/user/list", userCont.userList_get);
+router.get("/user/:id", userCont.user_get);
     // edit user data - only for admins
     // /user/:ID/status ? only for admins?
-router.put("/user/:id");
+router.put("/user/:id", userCont.user_put);
 
 // todo: other type of callbacks
-router.get("/notification/list");
-router.delete("/notification/:id");
+router.get("/notification/list", notCont.notificationList_get);
+router.delete("/notification/:id", notCont.notification_delete);
 
 module.exports = router
