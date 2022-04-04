@@ -61,8 +61,47 @@ describe("PUT /user/:id/make-admin", () => {
         expect(res.status).toBe(401);
         expect(res.body.error).toBe("Access denied");
     });
-    test.todo("handles user that does no exist")
-    test.todo("route handles if the user :id is already an admin");
-    test.todo("admin successfully made another user an admin");
+    test("handles user that does no exist", async() => {
+        const testUserId = usersList[1]._id;
+        await User.findByIdAndRemove(testUserId);
+
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .put(`/user/${testUserId}/make-admin`)
+            .type("form")
+            .send({})
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+
+        expect(res.status).toBe(400)
+        expect(res.body.error).toBe("error with user data on db")
+    })
+    test("route handles if the user :id is already an admin", async() => {
+        const testUserId = usersList[0]._id;
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .put(`/user/${testUserId}/make-admin`)
+            .type("form")
+            .send({})
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe("user is already an admin")
+    });
+    test("admin successfully made another user an admin", async() => {
+        const testUserId = usersList[2]._id;
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .put(`/user/${testUserId}/make-admin`)
+            .type("form")
+            .send({})
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        const newAdmin = await User.findById(testUserId);
+
+        expect(res.status).toBe(200)
+        expect(res.body.error).toBe(null)
+        expect(newAdmin.role).toBe("Admin")
+    });
     
 })

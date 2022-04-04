@@ -64,7 +64,7 @@ exports.user_get = async(req, res) => {
     });
 };
 exports.userToAdmin_put = async(req, res) => {
-    // Check if user is an admin on db
+    // 1.Check if user is an admin on db
     const reqUser = await User.findById(req.user.id);
     if (!reqUser) {
         return res.status(401).json({
@@ -76,7 +76,7 @@ exports.userToAdmin_put = async(req, res) => {
             error: "Access denied"
         })
     };
-    // attempt to make a new user an admin
+    // 2.attempt to make a new user an admin
     const userToEdit = await User.findById(req.params.id);
     if (!userToEdit) {
         return res.status(400).json({
@@ -96,20 +96,21 @@ exports.userToAdmin_put = async(req, res) => {
         email: userToEdit.email,
         password: userToEdit.password
     })
-
     try {
-        const savedNewAdmin = await findByIdAndUpdate(userToEdit._id, editedUser);
+        //3. attempt to save edited user on db
+        const savedNewAdmin = await User.findByIdAndUpdate(userToEdit._id, editedUser);
         res.json({
             error: null,
             msg: "user bacame an admin successfully",
             data: {
                 username: savedNewAdmin.username,
-                role: savedNewAdmin.role,
                 _id: savedNewAdmin._id
             }
         })
     } catch (err) {
-
+        return res.status(400).json({
+            error: "error saving data on db",
+        })
     }
     
 }
