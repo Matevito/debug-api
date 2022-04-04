@@ -117,7 +117,21 @@ exports.login_post = [
 ]
 
 exports.whoami_get = async (req, res) => {
+    const reqUser = await User.findById(req.user.id);
+    if (!reqUser) {
+        return res.status(400).json({
+            error: "error with user data on db"
+        })
+    };
+    const dataResponse = {
+        id: reqUser._id,
+        username: reqUser.username,
+        email: reqUser.email,
+        role: reqUser.role
+    }
     res.json({
-        msg: "todo..."
+        error: null,
+        msg: "sent user info on db",
+        data: dataResponse
     })
 }
