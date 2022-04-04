@@ -55,7 +55,7 @@ describe("POST /issue/:id/comment", () => {
         expect(res.body.error).toBe("Access denied");
     });
     test("handles project that does not exist", async() => {
-        const token = tokenList[3].token;
+        const token = tokenList[2].token;
         const issueId = issuesList[0]._id;
 
         const res = await request(app)
@@ -69,6 +69,25 @@ describe("POST /issue/:id/comment", () => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("Issue not found on db")
     })
-    test.todo("successfully saves comment on db");
-    test.todo("get issue controller displays comments saved")
+    test.todo("handles corrupted comment form data")
+    test.only("successfully saves comment on db", async() => {
+        const token = tokenList[2].token;
+        const issueId = issuesList[1]._id;
+        const res = await request(app)
+            .post(`/issue/${issueId}/comment`)
+            .type("form")
+            .send({
+                message: "a test comment"
+            })
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+        
+        console.log(res.body)
+        expect(res.status).toBe(200)
+        expect(res.body.error).toBe(null)
+        expect(res.body.msg).toBe("Comment saved successfully")
+    });
+    test.todo("get issue controller displays comments saved");
+    //todo test screenshots saving
 })

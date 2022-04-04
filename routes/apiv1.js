@@ -58,7 +58,7 @@ router.delete("/issue/:id", setIssueValues, adminOnly ,issueCont.issue_delete);
 // 3.1 Comments routes
 //  router.get("/issue/:id/comment/list")
 
-router.post("/issue/:id/comment", setIssueValues, inProject, commentCont.comment_post)
+router.post("/issue/:id/comment", setIssueValues, inProject, upload.array('screenshots', 5), commentCont.comment_post)
 
 // 4. User routes
 router.get("/user/list");
