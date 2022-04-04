@@ -69,8 +69,25 @@ describe("POST /issue/:id/comment", () => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("Issue not found on db")
     })
-    test.todo("handles corrupted comment form data")
-    test.only("successfully saves comment on db", async() => {
+    test("handles corrupted comment form data", async() => {
+        const token = tokenList[2].token;
+        const issueId = issuesList[1]._id;
+        const res = await request(app)
+            .post(`/issue/${issueId}/comment`)
+            .type("form")
+            .send({
+                message: ""
+            })
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token});
+
+        expect(res.status).toBe(400);
+        expect(res.body.msg).toBe("error with parsed form data");
+        expect(res.body.error.length).toBe(1);
+        expect(res.body.error[0].msg).toBe("a message for the comment is required")
+    })
+    test("successfully saves comment on db", async() => {
         const token = tokenList[2].token;
         const issueId = issuesList[1]._id;
         const res = await request(app)
@@ -83,11 +100,44 @@ describe("POST /issue/:id/comment", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
         
-        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toBe("Comment saved successfully")
     });
-    test.todo("get issue controller displays comments saved");
+    test("get issue controller displays comments saved", async() => {
+        const token1 = tokenList[2].token;
+        const token2 = tokenList[4].token;
+        const issueId = issuesList[2]._id;
+        const res1 = await request(app)
+            .post(`/issue/${issueId}/comment`)
+            .type("form")
+            .send({
+                message: "first comment"
+            })
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token1});
+        const res2 = await request(app)
+            .post(`/issue/${issueId}/comment`)
+            .type("form")
+            .send({
+                message: "second comment"
+            })
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token2});
+
+        // test
+        const testRes = await request(app)
+            .get(`/issue/${issueId}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token2});
+
+        expect(res1.status).toBe(200);
+        expect(res2.status).toBe(200);
+        expect(testRes.body.data.comments.length).toBe(2)
+    })
+    
     //todo test screenshots saving
 })
