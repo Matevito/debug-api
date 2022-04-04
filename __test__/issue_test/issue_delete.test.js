@@ -85,7 +85,8 @@ describe("DELETE /issue/:id", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
 
-        console.log(res.body)
+        expect(res.status).toBe(400)
+        expect(res.body.error).toBe("Issue not found on db")
     });
 
     test("admin can delete a proj and its related data", async() => {
