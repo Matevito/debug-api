@@ -6,6 +6,7 @@ const authCont = require("../controllers/auth");
 const demoCont = require("../controllers/demo");
 const proyCont = require("../controllers/project");
 const issueCont = require("../controllers/issue");
+const commentCont = require("../controllers/comment");
 
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
@@ -55,8 +56,9 @@ router.put("/issue/:id", setIssueValues, inProject, issueCont.issue_put);
 router.delete("/issue/:id", setIssueValues, adminOnly ,issueCont.issue_delete);
 
 // 3.1 Comments routes
-router.get("/issue/:id/comment/list")
-router.post("/issue/:id/comment")
+//  router.get("/issue/:id/comment/list")
+
+router.post("/issue/:id/comment", setIssueValues, inProject, commentCont.comment_post)
 
 // 4. User routes
 router.get("/user/list");
