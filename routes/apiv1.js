@@ -26,7 +26,7 @@ const sanitizeProject = require("../dependencies/middlewares/sanitizeProject");
 // 1. auth routes
 router.post("/sign-in", authCont.signin_post);
 router.post("/log-in", authCont.login_post);
-router.get("/whoami");
+router.get("/whoami", validateToken, authCont.whoami_get);
 
 // 1.5 demo auth routes
 router.post("/demo/admin", demoCont.login_admmin, authCont.login_post);
