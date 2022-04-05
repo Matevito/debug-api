@@ -1,5 +1,5 @@
 node_modules
-uploads
+resetDB.js
 __test__/middlewares/admin_teamLt.test.js
 /coverage
 .env
