@@ -6,10 +6,9 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app",
-    "test": "jest --forceExit",
-    "devtest": "jest --forceExit --detectOpenHandles",
-    "test_coverage": "jest --forceExit --detectOpenHandles --coverage",
-    "testone": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/user_test/whoami_get.test.js"
+    "test": "jest --forceExit --detectOpenHandles",
+    "devtest": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/project_test/project_create.test.js",
+    "test_coverage": "jest --forceExit --detectOpenHandles --coverage"
   },
   "engines": {
     "node": "17.3.0"

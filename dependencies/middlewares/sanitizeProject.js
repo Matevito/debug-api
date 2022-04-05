@@ -7,7 +7,7 @@ const sanitizeProject = [
     body("description", "A description is required").trim().isLength({ min:5, max:500}).escape(),
     body("team.*").custom(async(team_member, { req }) => {
         let team_list = req.body.team;
-
+        
         // members do not repeat
         let counting_team = [];
         team_list.forEach(member => {

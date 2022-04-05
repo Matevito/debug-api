@@ -62,7 +62,6 @@ describe("create_project tests", () => {
         expect(res.body.msg).toEqual("Error with parsed form data")
         expect(res.body.error.length).toEqual(3)
     });
-
     test("teamLeader is not on team", async() => {
         const proj_form = {
             title: "proyect test",
@@ -156,4 +155,25 @@ describe("create_project tests", () => {
         expect(res.status).toEqual(200);
         expect(promotedUser.role).toEqual("Team leader")
     });
+    test("handles team value of []", async() => {
+        const testProj = {
+            title: "project test....",
+            description: "a description example",
+            team: [],
+            teamLeader: null
+        }
+        //test
+        const res = await request(app)
+            .post("/project")
+            .type("form")
+            .send(testProj)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        expect(res.status).toBe(400)
+        expect(res.body.msg).toBe("Error with parsed form data")
+        expect(res.body.error.length).toBe(1)
+        expect(res.body.error[0].msg).toBe("team leader is not in the team list")
+    })
 })
