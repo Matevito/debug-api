@@ -14,7 +14,9 @@ const apiv1router = require("./routes/apiv1");
 const app = express();
 app.use(cors())
 app.use(helmet())
+
 app.use("/uploads", express.static("uploads"));
+
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
