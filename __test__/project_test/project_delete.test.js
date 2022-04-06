@@ -1,13 +1,17 @@
 const api = require("../../routes/apiv1");
 const express = require("express");
 const Project = require("../../models/project");
-const User = require("../../models/user")
+const Issue = require("../../models/issue");
+const Comment = require("../../models/issue");
+const ChangeLog = require("../../models/issue");
 
 if (process.env.NODE_ENV !== 'production') require("dotenv").config();
 
 const request = require("supertest");
 const testDB = require("../mongoConfigTesting");
 const userList = require("../userList").get_users
+
+const dbInfo2 = require("./dependencies/mockProjectdata");
 
 //jest.useFakeTimers()
 jest.setTimeout(30000)
@@ -39,6 +43,8 @@ describe("DELETE project/:id tests", () => {
     let usersList;
     let projId;
 
+    // second project
+    let proj2;
     beforeAll(async() => {
         await testDB();
 
@@ -62,6 +68,8 @@ describe("DELETE project/:id tests", () => {
             team: [usersList[4]._id, usersList[1]._id],
             teamLeader: usersList[4]._id
         };
+        const project2 = await dbInfo2.getData(usersList);
+        proj2 = project2;
     })
     
     test("route protected for devs", async () => {
@@ -133,7 +141,6 @@ describe("DELETE project/:id tests", () => {
         expect(res.body.error).toEqual(null)
         expect(removedPrj).toEqual(null)
     });
-    
     test("handles a project that does not exist", async () => {
         const testId = "todo:... valid mongoddb id"
         const res = await request(app)
@@ -145,5 +152,36 @@ describe("DELETE project/:id tests", () => {
         expect(res.status).toEqual(400)
         expect(res.body.error).toEqual("Project not found")
     });
-    
+    test("deletes handles projects with issues, comments and logs", async() => {
+         // set up admin token
+        adminToken = await request(app)
+            .post("/log-in")
+            .type("form")
+            .send(adminForm)
+        adminToken = adminToken.body.token;
+        
+        // test
+        const projId = proj2.project._id
+        const res = await request(app)
+            .delete(`/project/${projId}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": adminToken})
+        
+        const removedPrj = await Project.findById(projId);
+        const issuesDB = await Issue.find({})
+        const commentsDB = await Comment.find({});
+        const logDB = await ChangeLog.find({});
+        const comment1 = await Comment.findById(proj2.comments[0]._id);
+
+        expect(res.status).toEqual(200)
+        expect(res.body.error).toEqual(null)
+        expect(removedPrj).toEqual(null)
+        expect(issuesDB).toEqual([]);
+        expect(commentsDB).toEqual([]);
+        expect(logDB).toEqual([])
+        
+        // other test todo???
+        expect(comment1).toEqual(null)
+    })
 })

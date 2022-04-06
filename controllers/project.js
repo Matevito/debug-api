@@ -1,7 +1,11 @@
 const Project = require("../models/project");
 const Issue = require("../models/issue");
-const User = require("../models/user")
+const User = require("../models/user");
+const Comment = require("../models/comment");
+const ChangeLog = require("../models/changeLog");
+
 const createNotifications = require("../dependencies/createNotifications");
+const get_projectData = require("../dependencies/get_projectData");
 
 exports.project_post = async (req, res) => {
     // 0. check if a project title is already used.
@@ -135,9 +139,22 @@ exports.project_delete = async (req, res) => {
         })
     };
     // atttemp to delete proj
-    // todo: delete all issues and comments related to the project
+    const projectData = await get_projectData(proj._id);
     try {
         await Project.findByIdAndRemove(proj._id);
+
+        //delte project related data
+        projectData.issues.forEach(async(issue) => {
+            await Issue.findByIdAndRemove(issue._id)
+        })
+        projectData.comments.forEach(async(comment) => {
+            await Comment.findByIdAndRemove(comment._id)
+        })
+        projectData.changeLogs.forEach(async(log) => {
+            await ChangeLog.findByIdAndRemove(log._id)
+        })
+
+        //send response
         res.json({
             error: null,
             message: "project deleted!"
