@@ -22,15 +22,15 @@ Before get started make sure that you own on your cpu the last version of nodejs
 4. Enter the following config values in an .env file
 
         NODE_ENV="development"
-        DB_URL=\<database access link>
-        SALT_FACTOR=\<the integer value of your choice>
-        TOKEN_SECRET=\<a secret string>
+        DB_URL=<database access link>
+        SALT_FACTOR=<the integer value of your choice>
+        TOKEN_SECRET=<a secret string>
 
     Set-up the *NODE_ENV* value to *production* once you deploy your app. Also if you want to use the demo-functionalities of the app, set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its corresponding password on the db.
 
-        ADMIN_SEC="\<username or email> \<password>"
-        TEAML_SEC="\<username or email> \<password>"
-        DEV_SEC="\<username or email> \<password>"
+        ADMIN_SEC="<username or email> <password>"
+        TEAML_SEC="<username or email> <password>"
+        DEV_SEC="<username or email> <password>"
     
 5. Run the app
 
@@ -76,12 +76,11 @@ These routes are self explanatory. It takes as a body the specified data values 
     POST "/whoami"
 The route requires a valid token and returns the username, email and role of the user of the sent token. It works as a middlepoint where the app comunicates to the front-end the role of a user to dissplay some data and as a check-point for valid tokens and communicate if a user already has access to the app or not.
 ### 2. Protected routes
-.... explaain.... set up the token on the headers.
-configs = {
-    "auth-token": token
-}
+All the following routes require a valid token to be accessed. This token is obtained making a call to the */log-in* route and need to be stored on a header called *"auth-token"*. If the token is not valid it will send a corresponding response. In all the following routes if a notifications or changeLog value is returned in the body response, it's value corresponds to a boolean and aacccording to it's value indicates if the notifications and changeLogs have been made.
 #### 2.1 Project routes
-    POST "/project" {...} // only for admins
+
+    POST "/project" {title, description, team:array, teamLeader}
+Creating a new project is an action abilitated to anly admin users. The team array is conformed of the valid id's of users in the app and a title and description of at least 5 characters is required. The team leader is also required and needs to be inside the team array of users. Also if the selected user as team leader has the role of developer it's role is changed to *Team leader*. The title value need to be too unique.
     GET "/project/:id"
     GET "/project/list"
     PUT "/project/:id" {...}
