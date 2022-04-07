@@ -81,10 +81,16 @@ All the following routes require a valid token to be accessed. This token is obt
 
     POST "/project" {title, description, team:array, teamLeader}
 Creating a new project is an action abilitated to anly admin users. The team array is conformed of the valid id's of users in the app and a title and description of at least 5 characters is required. The team leader is also required and needs to be inside the team array of users. Also if the selected user as team leader has the role of developer it's role is changed to *Team leader*. The title value need to be too unique.
+
     GET "/project/:id"
     GET "/project/list"
-    PUT "/project/:id" {...}
-    DELETE "/project/:id" // only for admins
+To access a project info the user that makes the request need to be part of the project team or being an admin. It returns too all the issues that make a reference to the requested project. On the other hand, the */list* route takes all the projects the request user is part of and return their titles and id's. If the user is an admin it return's all the projects in db.
+
+    PUT "/project/:id" {title, description, team:array, teamLeader}
+The request user of the *put* call needs to be an admin or be the project leader of the project. the requirements of the parsed data are the same of the *post* call.
+
+    DELETE "/project/:id" 
+All *delete* functionalities on the app are only available to admins. The route not only delete the project object from db but too all it's related data. To be more preccisse, it's *issues* and it's corresponding *comments* and *changelogs*. The users tha became *team leaders* wroking on the deleted project remain with it's new role value status. Even if they are no longer leaders of another project.
 #### 2.2 Issue routes
     POST "/project/:id/issue" {...}
     GET "/project/:id/issue/list"
