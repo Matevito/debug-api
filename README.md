@@ -9,11 +9,11 @@ Before get started make sure that you own on your cpu the last version of nodejs
 
 1. Clone the repo
 
-	    git clone  \<link of this project >
+	    git clone https://github.com/Matevito/debug-api
 
 2. Enter the app folder
 
-        cd debug-api
+        cd debug-api/
 
 3. Install npm packages
 
@@ -21,12 +21,12 @@ Before get started make sure that you own on your cpu the last version of nodejs
 
 4. Enter the following config values in an .env file
 
-        NODE_ENV="development"*OR*"production"
+        NODE_ENV="development"
         DB_URL=\<database access link>
         SALT_FACTOR=\<the integer value of your choice>
         TOKEN_SECRET=\<a secret string>
 
-    Also if you want to use the demofunctionalities of the app set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its corresponding password on the db.
+    Set-up the *NODE_ENV* value to *production* once you deploy your app. Also if you want to use the demo-functionalities of the app, set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its corresponding password on the db.
 
         ADMIN_SEC="\<username or email> \<password>"
         TEAML_SEC="\<username or email> \<password>"
@@ -44,15 +44,15 @@ Before get started make sure that you own on your cpu the last version of nodejs
 
         npm run test_coverage
 
-#FEATURES
+# FEATURES
 
+* API that works as a back-end for ticket-system app.
 * Authentication using jwt and diferent type of layers of protection according the user role.
 * Issues and comments can use screenshots for easiness in development.
 * Demos routes easily removable that can give a quick access to the app to possible clients or interviwers.
-* Basic notification sistem.
 * It can handle tests using a virtual test database.
 
-#USAGE
+# USAGE
 ....
 Models...
 - User()
