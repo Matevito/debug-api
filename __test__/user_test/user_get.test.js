@@ -60,8 +60,9 @@ describe("GET /user/:id", () => {
         expect(res.status).toBe(200);
         expect(res.body.error).toBe(null);
         expect(res.body.msg).toBe("user info sent successfully")
-        expect(res.body.data.user._id == userTest_id).toBe(true)
+        expect(res.body.data.user.id == userTest_id).toBe(true)
         expect(res.body.data.projects.list.length).toBe(1);
         expect(res.body.data.issues.list.length).toBe(0)
+        expect(res.body.data.user.password).toBe(undefined)
     });
 })

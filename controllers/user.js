@@ -15,6 +15,7 @@ exports.userList_get = async(req, res) => {
         return {
             username: user.username,
             id: user._id,
+            role: user.role,
             email: user.email
         }
     })
@@ -25,12 +26,18 @@ exports.userList_get = async(req, res) => {
     })
 };
 exports.user_get = async(req, res) => {
-    const userOnDB =  await User.findById(req.params.id);
+    let userOnDB =  await User.findById(req.params.id);
     if (!userOnDB) {
         return res.status(400).json({
             error: "User not found on db"
         })
     };
+    userOnDB = {
+        username: userOnDB.username,
+        email: userOnDB.email,
+        id: userOnDB._id,
+        role: userOnDB.role
+    }
     // user project info
     const projectsOnDB = await Project.find({});
     if (!projectsOnDB) {
