@@ -26,7 +26,7 @@ Before get started make sure that you own on your cpu the last version of nodejs
         SALT_FACTOR=\<the integer value of your choice>
         TOKEN_SECRET=\<a secret string>
 
-Also if you want to use the demofunctionalities of the app set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its correspongind password on the db.
+    Also if you want to use the demofunctionalities of the app set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its corresponding password on the db.
 
         ADMIN_SEC="\<username or email> \<password>"
         TEAML_SEC="\<username or email> \<password>"
@@ -35,6 +35,22 @@ Also if you want to use the demofunctionalities of the app set-up the following 
 5. Run the app
 
         npm start
+
+6. Once you have changed the code or added a new functionality be sure that you havent broken anything running the test suite
+
+        npm run test
+
+    or if you want a more clear feedback in an enriched html
+
+        npm run test_coverage
+
+#FEATURES
+
+* Authentication using jwt and diferent type of layers of protection according the user role.
+* Issues and comments can use screenshots for easiness in development.
+* Demos routes easily removable that can give a quick access to the app to possible clients or interviwers.
+* Basic notification sistem.
+* It can handle tests using a virtual test database.
 
 #USAGE
 ....
@@ -48,15 +64,8 @@ complementary models.
 - ChangeLog(),
 - Notification()
 
-Instalation...
-create an uploads folder and inside it an screenshots too.
 
-Features....
-- Authentication using jwt and diferent type of layers of protection according the user role.
-- Issues and comments can use screenshots for easiness in development.
-- Demos routes easily removable that can give a quick access to the app to possible clients or interviwers.
-- Basic notification sistem.
-- It can handle tests using a virtual test database.
+
 
 
 Usage 
