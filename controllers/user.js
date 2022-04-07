@@ -3,16 +3,21 @@ const Project = require("../models/project");
 const User = require("../models/user")
 
 const { body, validationResult } = require("express-validator");
-const { findByIdAndUpdate } = require("../models/issue");
 
 exports.userList_get = async(req, res) => {
-    const userList = await User.find({})
+    let userList = await User.find({})
     if (!userList) {
         return res.status(400).json({
             error: "users on db not found"
         })
     };
-
+    userList = userList.map((user) => {
+        return {
+            username: user.username,
+            id: user._id,
+            email: user.email
+        }
+    })
     res.json({
         error: null,
         msg: "user-list sent successfully",
