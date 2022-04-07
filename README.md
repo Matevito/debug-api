@@ -9,32 +9,32 @@ Before get started make sure that you own on your cpu the last version of nodejs
 
 1. Clone the repo
 
-	git clone  \<link of this project >
+	    git clone  \<link of this project >
 
 2. Enter the app folder
 
-    cd debug-api
+        cd debug-api
 
 3. Install npm packages
 
-    npm i
+        npm i
 
 4. Enter the following config values in an .env file
 
-    NODE_ENV="development"*OR*"production"
-    DB_URL=\<database access link>
-    SALT_FACTOR=\<the integer value of your choice>
-    TOKEN_SECRET=\<a secret string>
+        NODE_ENV="development"*OR*"production"
+        DB_URL=\<database access link>
+        SALT_FACTOR=\<the integer value of your choice>
+        TOKEN_SECRET=\<a secret string>
 
 Also if you want to use the demofunctionalities of the app set-up the following values of the accounts you will use on the database with it's corresponding usernames or emails and its correspongind password on the db.
 
-    ADMIN_SEC="\<username or email> \<password>"
-    TEAML_SEC="\<username or email> \<password>"
-    DEV_SEC="\<username or email> \<password>"
+        ADMIN_SEC="\<username or email> \<password>"
+        TEAML_SEC="\<username or email> \<password>"
+        DEV_SEC="\<username or email> \<password>"
     
 5. Run the app
 
-    npm start
+        npm start
 
 #USAGE
 ....
