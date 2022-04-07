@@ -92,6 +92,7 @@ The request user of the *put* call needs to be an admin or be the project leader
     DELETE "/project/:id" 
 All *delete* functionalities on the app are only available to admins. The route not only delete the project object from db but too all it's related data. To be more preccisse, it's *issues* and it's corresponding *comments* and *changelogs*. The users tha became *team leaders* wroking on the deleted project remain with it's new role value status. Even if they are no longer leaders of another project.
 #### 2.2 Issue routes
+
     POST "/project/:id/issue" {title, description, project, priority, type, screenshots}
 First of all, the user that makes the request of a new issue in just needs to be part of the project team or being an admin. the title and description values are simple strings. The project value, on the other hand, needs to be a valid id of a project stored on db. It seems quite redundant at first sight cause the project id is stablished when making the call but I wanted to be the more descriptive enough on the form making of the route.
 the screenshots value is not needed. But rememeber that if you want to add images to the issue, on the header of the request state the *Content-Type* value to *multipart/form-data*. The *handlingTeam* value is set to *a blank array* by default and it's status value to *open*. So the creation of an issue does not assignate a user to a ticket.
@@ -106,6 +107,7 @@ A valid response of this get methods require  the request user to be part of the
     PUT "/issue/:id/take-issue"
     PUT "/issue/:id/leave-issue"
 To take an issue make a request to the */take-issue route*. The route handles if the request user is already part of the ticket handling-team. The */leave-issue* as it's name implies removes a request user of it's handling-team. All this routes and the *put issue* one stores all it's changes on a changelog. Because the way the route works a team-leader cannot remove an user from a ticket by it'self.
+
     PUT "/issue/:id" {description, status, priority, type}
 The *defacto* route to store the progress on an issue-ticket. The description priority and type values where explained on the creation of an issue route. One think to have in mind with the status value is that a developer cannot parse the status value as *solved*, so it needs to parse it as *under review* and wait for the project-team leader to change it. The screenshots cannot be deleted or changed and the title too, so be ware when making an issue. Dont forget that the valid values for status are the following:
 **_status:_** open, aditional info needed, in progress, under review, solved.
@@ -116,16 +118,16 @@ A comment can be created on an issue by any user part of the project team. It on
      DELETE "/issue/:id"
 As it was clarified previously, this route can only be made by an admin user. It not only deletes the issue object from db but it deletes too it's comments and changelogs. So be aware when using this route.
 ### 3. User routes
-
     GET "/user/list"
     GET "/user/:id"
-    
-    PUT "/user/:id/make-admin"
-### 4. Demo routes
+The user get routes can be made by any user, independent of it's role or projects it's part of. The */user/list* route sends the username, id, role and email of all the users on db. The */user/:id* sends the user info and the projects and issues it's part of.
 
+    PUT "/user/:id/make-admin"
+The only method the the appprovides to edit user info is a */make-admin* request and can only be performed by and admin. As it's expected, the route makes the user with the id of the request an admin. The route handles if the parsed user is already an admin.
+### 4. Demo routes
     POST "/demo/admin"
     POST "/demo/teamLeader"
     POST "/demo/developer"
-    
+
 ## Contact
 You can find me easily writting meto and email to madiazt@unal.edu.co or sending me a message to my [git-hub account](https://github.com/Matevito).
