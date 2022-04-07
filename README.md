@@ -61,28 +61,50 @@ The *Issue* model works as your ticket and it can stores a basic description and
     
 On a more secondary role there's a *Notification* model. It's not as robust as the other ones and it's not tested enough to be confident to use it but it bassically stores notifications for a user of changes made on a project it's part on and it's related data (changes on issues). It does not handle at the moment when a comment is made but this can be easily added on.
 You can check exactly wich data the mentioned models stores on the [*/models*](https://github.com/Matevito/debug-api/tree/master/models) folder.
-## SET-UP
+## How to call the api
+All the app routes are stored on */apiv1/*, except the images stored on the issues and comment models. So be sure when making calls to the api to call to the *root/apiv1/* after making any call, where root is wherever the app is running and apiv1 the name of the router of the app.
+Other thing important to have in mind is that excluding */sign-in*, */log-in* and all the *demos* routes, all the listed routes require a valid *JWT-token* to be accessed.
+## Using the api
+### 1. Authentication routes
+The following routes handle  authentication and registration functionalities.
 
-Usage The root of the app routes is "/apiv1/". Hav in mind that all of the following routes start with this route to evade possible buggs. Also, it's important to notice that excluding the sign-in, log-in and demos routes all of the listed routes require a valid jwt token to be accessible (have this in mind if you want to implement this api on a frontend or develop new features and want to make new test to them).
+    POST "/sign-in" { username, password, repeatPassword, email }
+    POST "/log-in" { username, password }
 
-    Authentication
+These routes are self explanatory. It takes as a body the specified data values and return a corresponding response. In the case of *sign-in* it checks if the username or email has already been taken and other error-handling as different passwords or an username too short. It does not send as a response a valid token so once a user has made an account it needs to make a call to the *log-in* route.
 
-    1.1 sign-in log-in -POST "/sign-in" { username, password, repeatPassword, email }
-
-     -POST "/log-in" { username, password }
-
-    1.2 demos The demo routes - POST
-
-     - POST "
-
-     - POST "/
-
-    1.3 whoami
-
-    Protect routes
+    POST "/whoami"
+The route requires a valid token and returns the username, email and role of the user of the sent token. It works as a middlepoint where the app comunicates to the front-end the role of a user to dissplay some data and as a check-point for valid tokens and communicate if a user already has access to the app or not.
+### 2. Protected routes
+.... explaain.... set up the token on the headers.
+configs = {
+    "auth-token": token
+}
+#### 2.1 Project routes
+    POST "/project" {...} // only for admins
+    GET "/project/:id"
+    GET "/project/list"
+    PUT "/project/:id" {...}
+    DELETE "/project/:id" // only for admins
+#### 2.2 Issue routes
+    POST "/project/:id/issue" {...}
+    GET "/project/:id/issue/list"
+    GET "/issue/:id"
     
-        POST "/project"
-        GET "/project/:id"
-        PUT "/project/:id"
-        DELETE "/project/:id"
-        GET "/project/list" only for admins
+    PUT "/issue/:id/take-issue" {}
+    PUT "/issue/:id/leave-issue" {}
+    PUT "/issue/:id" {...}
+    
+    DELETE "/issue/:id"
+    
+    POST "/issue/:id/comment" {...}
+### 3. User routes
+    GET "/user/list"
+    GET "/user/:id"
+    PUT "/user/:id/make-admin"
+### 4. Demo routes
+    POST "/demo/admin"
+    POST "/demo/teamLeader"
+    POST "/demo/developer"
+## Contact
+You can find me easily writting meto and email to madiazt@unal.edu.co or sending me a message to my [git-hub account](https://github.com/Matevito).
