@@ -92,13 +92,20 @@ The request user of the *put* call needs to be an admin or be the project leader
     DELETE "/project/:id" 
 All *delete* functionalities on the app are only available to admins. The route not only delete the project object from db but too all it's related data. To be more preccisse, it's *issues* and it's corresponding *comments* and *changelogs*. The users tha became *team leaders* wroking on the deleted project remain with it's new role value status. Even if they are no longer leaders of another project.
 #### 2.2 Issue routes
-    POST "/project/:id/issue" {...}
+    POST "/project/:id/issue" {title, description, project, priority, type, screenshots}
+First of all, the user that makes the request of a new issue in just needs to be part of the project team or being an admin. the title and description values are simple strings. The project value, on the other hand, needs to be a valid id of a project stored on db. It seems quite redundant at first sight cause the project id is stablished when making the call but I wanted to be the more descriptive enough on the form making of the route.
+the screenshots value is not needed. But rememeber that if you want to add images to the issue, on the header of the request state the *Content-Type* value to *multipart/form-data*. The *handlingTeam* value is set to [] by default and it's status value to *open*. So the creation of an issue does not assignate a user to a ticket.
+Last but not least important, the priority and type valid values are:
+**_type:_** bugg-error, feature req, documentation req
+**_priority:_** low, mid, high
+
     GET "/project/:id/issue/list"
     GET "/issue/:id"
-    
-    PUT "/issue/:id/take-issue" {}
-    PUT "/issue/:id/leave-issue" {}
-    PUT "/issue/:id" {...}
+A valid response of this get methods require  the request user to be part of the project team. The */issue/list* route returns all issues of the requested project but does not sends it's changeLog or comments section. To get this data make a call to the specific issue you want to get it's info.
+    PUT "/issue/:id/take-issue"
+    PUT "/issue/:id/leave-issue"
+
+    PUT "/issue/:id" {description, status, priority,type}
     
     DELETE "/issue/:id"
     
