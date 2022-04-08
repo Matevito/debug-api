@@ -128,6 +128,8 @@ The only method the the appprovides to edit user info is a */make-admin* request
     POST "/demo/admin"
     POST "/demo/teamLeader"
     POST "/demo/developer"
-
+The demo routes are an easy way to access the app without creating an account an experience in first hand the differences between been an admin, team leader or a developer.
+As it's quite evident, this controllers are thinked to be used onloy when a project it's in it's development phase for vulnerability reasons. The controllers to be set-up require, first, that the user to be used as demos already exist on db and to set the username and passwords value as an enviroment config value.
+The reson of this consist in that all this routes user the */log-in* controller and use a middleware to set it's authentication values. Certainly a more secure way to handle this demos is having a separate controller to handle the authentication so feel free to do it if you want to.
 ## Contact
 You can find me easily writting meto and email to madiazt@unal.edu.co or sending me a message to my [git-hub account](https://github.com/Matevito).
