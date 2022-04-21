@@ -1,6 +1,7 @@
 const api = require("../../routes/apiv1");
 const express = require("express");
 const User = require("../../models/user")
+const Project = require("../../models/project")
 if (process.env.NODE_ENV !== 'production') require("dotenv").config();
 
 const request = require("supertest");
@@ -18,6 +19,7 @@ app.use("/", api);
 describe("GET /user/:id", () => {
     let usersList;
     let testProject;
+    let secondProject;
     let tokenList;
     let issuesList;
 
@@ -32,6 +34,16 @@ describe("GET /user/:id", () => {
         issuesList.forEach(async(issue) => {
             await issue.save()
         })
+        // saving second project
+        let project2Form = {
+            title: "second project",
+            description: "something",
+            team: [usersList[0]._id, usersList[2]._id, usersList[1]._id],
+            teamLeader: usersList[0]._id
+        }
+        
+        project2Form = new Project(project2Form);
+        secondProject = await project2Form.save();
     });
 
     test("handles user not on db", async() => {
@@ -48,7 +60,7 @@ describe("GET /user/:id", () => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("User not found on db")
     });
-    test("returns user on db", async() => {
+    test.only("returns user on db", async() => {
         const token = tokenList[0].token;
         const userTest_id = usersList[4]._id;
         const res = await request(app)
@@ -57,6 +69,8 @@ describe("GET /user/:id", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token})
 
+        console.log(res.body.project)
+        
         expect(res.status).toBe(200);
         expect(res.body.error).toBe(null);
         expect(res.body.msg).toBe("user info sent successfully")
