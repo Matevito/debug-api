@@ -60,7 +60,7 @@ describe("GET /user/:id", () => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("User not found on db")
     });
-    test.only("returns user on db", async() => {
+    test("returns user on db", async() => {
         const token = tokenList[0].token;
         const userTest_id = usersList[4]._id;
         const res = await request(app)
@@ -68,8 +68,6 @@ describe("GET /user/:id", () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set({"auth-token": token})
-
-        console.log(res.body.project)
         
         expect(res.status).toBe(200);
         expect(res.body.error).toBe(null);

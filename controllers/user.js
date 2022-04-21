@@ -46,7 +46,7 @@ exports.user_get = async(req, res) => {
         })
     }
     const userProjects = projectsOnDB.filter((proj) => {
-        return proj.team.includes(req.params.id);
+        return proj.team.includes(req.params.id)
     });
     // user issues info
     const issuesOnDB = await Issue.find({});
@@ -66,7 +66,7 @@ exports.user_get = async(req, res) => {
             user: userOnDB,
             projects: {
                 number: userProjects.length,
-                list: projectsOnDB,
+                list: userProjects,
             },
             issues: {
                 number: userIssues.length,
