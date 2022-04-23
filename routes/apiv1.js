@@ -13,7 +13,7 @@ const notCont = require("../controllers/notification");
 // middlewares
 const validateToken = require("../dependencies/middlewares/validateToken");
     // all middlewares require user { _id, username, role}
-const upload = require("../dependencies/middlewares/upload");
+const upload = require("../dependencies/middlewares/multer");
 
 // protection on routes.
 const adminOnly = require("../dependencies/middlewares/adminOnly");

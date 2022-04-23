@@ -6,6 +6,22 @@ const Comment = require("../models/comment")
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
 const createChangeLog = require("../dependencies/createChangeLog");
+const cloudinary = require("../dependencies/middlewares/cloudinary");
+
+const saveImages = async(files) => {
+    if (!files) {
+        return []
+    } else {
+        const savedImages = await Promise.all(
+            files.map(async(file) => {
+                console.log(file)
+                const result = await cloudinary.uploader.upload(file.path);
+                return result.secure_url;
+            })
+        );
+        return savedImages
+    }
+};
 
 exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
@@ -45,16 +61,10 @@ exports.issue_post = [
 
         // 1. attempt to create issue Obj
     
-        let screenshots = [];
-        if (req.files) {
-            //todo: change screenshots value
-            const files = req.files
-            files.forEach((file) => {
-                const path = file.path
-                screenshots.push(path)
-            })
-        }
-
+        // handle screenshots
+        const files = req.files;
+        const screenshots = await saveImages(files)
+        
         const new_issue = new Issue({
             title: req.body.title,
             description: req.body.description,
