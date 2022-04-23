@@ -2,6 +2,8 @@ const Issue = require("../models/issue");
 const Comment = require("../models/comment")
 
 const { body, validationResult } = require("express-validator");
+const saveImage = require("../dependencies/saveImages");
+const saveImages = require("../dependencies/saveImages");
 
 exports.comment_post = [
     body("message", "a message for the comment is required").trim().isLength({ min:1, max:500}).escape(),
@@ -23,14 +25,8 @@ exports.comment_post = [
             })
         };
         // handle screenshots array
-        const screenshots = [];
-        if (req.files) {
-            const files = req.files;
-            files.forEach((file) => {
-                const path = file.path;
-                screenshots.push(path)
-            })
-        };
+        const files = req.files;
+        const screenshots = await saveImages(files);
     
         // build comment obj
         const new_comment = new Comment({

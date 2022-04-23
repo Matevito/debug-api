@@ -6,22 +6,7 @@ const Comment = require("../models/comment")
 const { body, validationResult } = require("express-validator");
 const createNotifications = require("../dependencies/createNotifications");
 const createChangeLog = require("../dependencies/createChangeLog");
-const cloudinary = require("../dependencies/middlewares/cloudinary");
-
-const saveImages = async(files) => {
-    if (!files) {
-        return []
-    } else {
-        const savedImages = await Promise.all(
-            files.map(async(file) => {
-                console.log(file)
-                const result = await cloudinary.uploader.upload(file.path);
-                return result.secure_url;
-            })
-        );
-        return savedImages
-    }
-};
+const saveImages = require("../dependencies/saveImages");
 
 exports.issue_post = [
     body("title", "A title for the project is required").trim().isLength({ min:5, max:100}).escape(),
@@ -74,7 +59,6 @@ exports.issue_post = [
             type: req.body.type,
             screenshots: screenshots,
         });
-
         // 2. send notifications to team members and save issue
         const userId = req.user.id
         let team = await Project.findById(req.body.project);
