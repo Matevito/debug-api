@@ -103,6 +103,10 @@ describe("POST /issue/:id/comment", () => {
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toBe("Comment saved successfully")
+
+        // it populates correctly user data
+        const commentList = res.body.data.commentList;
+        expect(commentList[0].user.username).toBe(tokenList[2].username)
     });
     test("get issue controller displays comments saved", async() => {
         const token1 = tokenList[2].token;

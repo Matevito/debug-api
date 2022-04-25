@@ -39,7 +39,7 @@ exports.comment_post = [
         //attempt to save comment and send response
         try {
             const savedComment = await new_comment.save();
-            const commentList = await Comment.find({ issue: issue._id });
+            const commentList = await Comment.find({ issue: issue._id }).populate({path:"user", select:"username"});
             res.json({
                 error: null,
                 msg: "Comment saved successfully",
