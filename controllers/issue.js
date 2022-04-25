@@ -115,7 +115,7 @@ exports.issue_get = async(req, res) => {
         })
     };
 
-    const issueComments = await Comment.find({ issue: issue._id});
+    const issueComments = await Comment.find({ issue: issue._id}).populate({path:"user", select:"username"});
     if (!issueComments) {
         return res.status(400).json({
             error: "Comments of issue not found on db"

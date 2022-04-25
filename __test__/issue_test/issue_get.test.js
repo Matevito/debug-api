@@ -1,5 +1,8 @@
 const api = require("../../routes/apiv1");
 const Issue = require("../../models/issue");
+const Comment = require("../../models/comment");
+const ChangeLog = require("../../models/changeLog");
+
 const express = require("express");
 
 if (process.env.NODE_ENV !== 'production') require("dotenv").config();
@@ -98,8 +101,47 @@ describe("GET /issue/:id/", () => {
         expect(res.body.data.issue.handlingTeam[0].username).toBe("testDev2")
     });
     test.only("populates changeLog and comments", async() => {
-        const token = tokenList[2].token;
+        // comment and changelog set-up
         const issueId = issuesList[2]._id;
+        const changeLog = [
+            new ChangeLog({
+                issue: issueId,
+                user: tokenList[2].id,
+                oldValue: "low",
+                newValue: "mid",
+                property: "priority"
+            }),
+            new ChangeLog({
+                issue: issueId,
+                user: tokenList[0].id,
+                property: "description",
+                oldValue: "old description",
+                newValue: "new description"
+            })
+        ]
+        changeLog.forEach(async(logValue) => {
+            await logValue.save()
+        })
+        const comments = [
+            new Comment({
+                issue: issueId,
+                user: tokenList[0].id,
+                message: "first message",
+                screenshots: []
+            }),
+            new Comment({
+                issue: issueId,
+                user: tokenList[2].id,
+                message: "second message bro...",
+                screenshots: []
+            })
+        ];
+        comments.forEach(async(comment) => {
+            await comment.save()
+        })
+
+        // res set-up
+        const token = tokenList[2].token;
 
         const res = await request(app)
             .get(`/issue/${issueId}`)
@@ -107,5 +149,16 @@ describe("GET /issue/:id/", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
         
+        //tes
+        expect(res.status).toBe(200)
+        expect(res.body.error).toBe(null)
+        expect(res.body.msg).toBe("Issue sent successfully!")
+        const resLog = res.body.data.changeLog;
+        const resComments = res.body.data.comments
+        console.log(resLog);
+        console.log(resComments)
+
+        expect(resComments[0].user.username).toBe("testAdmin");
+        expect(resComments[1].user.username).toBe("testDev2")
     })
 })
