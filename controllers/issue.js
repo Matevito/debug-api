@@ -100,7 +100,7 @@ exports.issueList_get  = async (req, res) => {
 };
 exports.issue_get = async(req, res) => {
     // this is done too on the middleware that sets proj id and issue id values on req
-    const issue = await Issue.findById(req.issue);
+    const issue = await Issue.findById(req.issue).populate({path:"handlingTeam", select:"username"});
     if (!issue) {
         return res.status(400).json({
             error: "Issue not found on db"
