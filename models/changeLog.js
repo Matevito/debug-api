@@ -8,6 +8,7 @@ const changeLogSchema = mongoose.Schema({
         required: true,
         enum: ["description", "status", "priority", "type", "handlingTeam"]
     },
+    user: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
     oldValue: { type: String, required: true },
     newValue: { type: String, required: true },
     date: { type: Date, default: DateTime.now() }

@@ -100,7 +100,7 @@ describe("GET /issue/:id/", () => {
         expect(res.body.data.issue._id == issueId).toBe(true)
         expect(res.body.data.issue.handlingTeam[0].username).toBe("testDev2")
     });
-    test.only("populates changeLog and comments", async() => {
+    test("populates changeLog and comments", async() => {
         // comment and changelog set-up
         const issueId = issuesList[2]._id;
         const changeLog = [
@@ -149,15 +149,18 @@ describe("GET /issue/:id/", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
         
-        //tes
+        //test
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toBe("Issue sent successfully!")
         const resLog = res.body.data.changeLog;
         const resComments = res.body.data.comments
-        console.log(resLog);
-        console.log(resComments)
 
+        expect(resLog.length).toBe(2)
+        expect(resLog[0].user.username).toBe("testDev2");
+        expect(resLog[1].user.username).toBe("testAdmin")
+        
+        expect(resLog.length).toBe(2)
         expect(resComments[0].user.username).toBe("testAdmin");
         expect(resComments[1].user.username).toBe("testDev2")
     })

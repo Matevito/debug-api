@@ -56,7 +56,7 @@ const createChanges = (oldObj, newObj) => {
     return changes;
 }
 
-const createChangeLog = (oldObj, newObj) => {
+const createChangeLog = (oldObj, newObj, user) => {
     const changes = createChanges(oldObj, newObj);
     if (changes.length === 0) { 
         return false
@@ -68,6 +68,7 @@ const createChangeLog = (oldObj, newObj) => {
             property: changeLog.property,
             oldValue: changeLog.oldValue,
             newValue: changeLog.newValue,
+            user: user
         });
         const saved_changeLog = await new_changeLog.save();
         if (!saved_changeLog){

@@ -108,7 +108,7 @@ exports.issue_get = async(req, res) => {
     }
 
     // get changelog and comments of issue
-    const issueChangeLog = await ChangeLog.find({ issue: issue._id});
+    const issueChangeLog = await ChangeLog.find({ issue: issue._id}).populate({path: "user", select:"username"});
     if (!issueChangeLog) {
         return res.status(400).json({
             error: "Changelog of issue not found"
@@ -177,7 +177,7 @@ exports.takeIssue_put = async (req, res) => {
         
         // create notifications and changelog
         let notifications = false;
-        const changeLog = await createChangeLog(currentIssue, editedIssueObj);
+        const changeLog = await createChangeLog(currentIssue, editedIssueObj, userId);
         if (changeLog === true) {
             const message = `the issue ${currentIssue.title} team has been edited`;
             const ref = "issue";
@@ -246,7 +246,7 @@ exports.leaveIssue_put = async (req, res) => {
         await Issue.findByIdAndUpdate(currentIssue._id, editedIssueObj)
 
         let notifications = false;
-        const changeLog = createChangeLog(currentIssue, editedIssueObj);
+        const changeLog = createChangeLog(currentIssue, editedIssueObj, userId);
         if (changeLog === true) {
             const message = `the issue ${currentIssue.title} team has been edited`;
             const ref = "issue";
@@ -336,7 +336,7 @@ exports.issue_put = [
             
             // set-up changelog
             let notifications = false
-            const changeLog = await createChangeLog(issueOnDB, editedIssueObj);
+            const changeLog = await createChangeLog(issueOnDB, editedIssueObj, req.user.id);
             
             /*condifition. if this happens then the issue was truly changed,
             so send notification. if not, then theres no need to send notifications.*/

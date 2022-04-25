@@ -79,7 +79,8 @@ const getCommentsLog = async(issue, users) => {
         issue: issueId,
         property: "description",
         oldValue: "........",
-        newValue: "a new value"
+        newValue: "a new value",
+        user: users[0]._id
     });
     await changeLog_obj.save();
 

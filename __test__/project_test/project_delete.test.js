@@ -14,7 +14,7 @@ const userList = require("../userList").get_users
 const dbInfo2 = require("./dependencies/mockProjectdata");
 
 //jest.useFakeTimers()
-jest.setTimeout(30000)
+jest.setTimeout(60000)
 
 const app = express();
 

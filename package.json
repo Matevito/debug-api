@@ -8,7 +8,7 @@
     "start": "node app.js",
     "dev": "nodemon app",
     "test": "jest --forceExit --detectOpenHandles",
-    "devtest": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/issue_test/issue_get.test.js",
+    "devtest": "jest --forceExit --detectOpenHandles --findRelatedTests __test__/project_test/project_delete.test.js",
     "test_coverage": "jest --forceExit --detectOpenHandles --coverage"
   },
   "engines": {
