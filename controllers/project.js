@@ -173,12 +173,14 @@ exports.project_get = async (req, res) => {
     };
 
     // todo: check paring data of issues
-    const projIssues = await Issue.find({ project: req.params.id })
+    let projIssues = await Issue.find({ project: req.params.id }).populate({path: "handlingTeam", select:"username"})
     if (!projIssues) {
         return res.status(400).json({
             error: "Error parsing project data"
         })
     };
+    
+    //send response
     res.json({
         error: null,
         msg: "Project succesfully send",

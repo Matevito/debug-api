@@ -1,6 +1,7 @@
 const api = require("../../routes/apiv1");
 const express = require("express");
 const Project = require("../../models/project");
+const Issue = require("../../models/issue");
 
 if (process.env.NODE_ENV !== 'production') require("dotenv").config();
 
@@ -121,5 +122,62 @@ describe("GET /project/:id tests", () => {
         expect(res.body.data.teamLeader.username).toBe(users[4].username);
         expect(res.body.data.team.length).toBe(2)
     });
-    test.todo("populates user values on project issues")
+    test("populates user values on project issues", async() => {
+        // create two issues object of issue.
+        const users = savedUsers;
+        
+        const Issue1 = new Issue({
+            title: "first issue",
+            description:"something",
+            project: projId,
+            status: "solved",
+            priority: "low",
+            type: "feature req",
+            handlingTeam: [users[1]._id],
+            screenshots: []
+        });
+        const Issue2 = new Issue({
+            title: "second issue",
+            description:"something",
+            project: projId,
+            status: "in progress",
+            priority: "low",
+            type: "feature req",
+            handlingTeam: [users[1]._id, users[4]._id],
+            screenshots: ["an url", "a second url"]
+        });;
+        await Issue1.save();
+        await Issue2.save()
+
+        // get token
+        const userToken =  await userList();
+        let devToken = await request(app)
+            .post("/log-in")
+            .type("form")
+            .send({
+                username: userToken[1].username,
+                password: userToken[1].password
+            });
+        devToken = devToken.body.token
+
+        //test
+        const res = await request(app)
+            .get(`/project/${projId}`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": devToken})
+
+        expect(res.status).toEqual(200)
+        expect(res.body.error).toEqual(null)
+
+        const projIssues = res.body.issues
+        expect(projIssues.length).toBe(2)
+
+        expect(projIssues[0].handlingTeam.length).toBe(1)
+        expect(projIssues[0].handlingTeam[0].username).toBe("testDev1")
+        
+        expect(projIssues[1].handlingTeam.length).toBe(2)
+        expect(projIssues[1].handlingTeam[0].username).toBe("testDev1")
+        expect(projIssues[1].handlingTeam[1].username).toBe("test-TeamL")
+    })
 })
