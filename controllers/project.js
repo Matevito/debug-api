@@ -165,7 +165,7 @@ exports.project_delete = async (req, res) => {
 };
 exports.project_get = async (req, res) => {
     // returns a project in db with req.params.id}
-    const project = await Project.findById(req.params.id)
+    const project = await Project.findById(req.params.id).populate({path: "teamLeader team", select:"username"})
     if (!project) {
         return res.status(400).json({
             error: "Project not found"

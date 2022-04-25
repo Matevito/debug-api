@@ -73,6 +73,7 @@ describe("GET /issue/:id/", () => {
             .set('Accept', 'application/json')
             .set({"auth-token": token});
 
+        
         expect(res.status).toBe(200)
         expect(res.body.error).toBe(null)
         expect(res.body.msg).toBe("Issue sent successfully!")

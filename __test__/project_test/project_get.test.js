@@ -93,6 +93,8 @@ describe("GET /project/:id tests", () => {
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data._id == projId).toBe(true)
+        expect(res.body.data.teamLeader.username).toBe(users[4].username);
+        expect(res.body.data.team.length).toBe(2)
     })
     test("handles user assigned to project", async() => {
 
@@ -116,5 +118,8 @@ describe("GET /project/:id tests", () => {
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data._id == projId).toEqual(true)
-    })
+        expect(res.body.data.teamLeader.username).toBe(users[4].username);
+        expect(res.body.data.team.length).toBe(2)
+    });
+    test.todo("populates user values on project issues")
 })
