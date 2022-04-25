@@ -86,7 +86,7 @@ exports.issue_post = [
 ];
 exports.issueList_get  = async (req, res) => {
     const projId = req.params.id
-    const IssueList = await Issue.find({ project: projId })
+    const IssueList = await Issue.find({ project: projId }).populate({path:"handlingTeam", select:"username"})
     if (!IssueList) {
         res.status(400).json({
             error: "Data not found"

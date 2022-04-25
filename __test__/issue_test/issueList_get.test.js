@@ -35,6 +35,7 @@ describe("GET /project/:id/issue/", () => {
                 status: "open",
                 priority: "mid",
                 type: "feature req",
+                handlingTeam: [testProject.team[0]],
                 screenshots: []
             },
             {
@@ -44,6 +45,7 @@ describe("GET /project/:id/issue/", () => {
                 status: "open",
                 priority: "high",
                 type: "bugg-error",
+                handlingTeam : [testProject.team[0], testProject.team[1]],
                 screenshots: [] 
             }
         ];
@@ -82,5 +84,24 @@ describe("GET /project/:id/issue/", () => {
         expect(res.body.data.length).toEqual(2)
         expect(res.body.data[0].title).toEqual("issue 1")
         expect(res.body.data[1].title).toEqual("issue 2")
+    });
+    test.only("controller returns populated data of handlingTeam", async() => {
+        const token = tokenList[0].token;
+        const res = await request(app)
+            .get(`/project/${testProject._id}/issue/list`)
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set({"auth-token": token})
+        
+        expect(res.status).toBe(200)
+        expect(res.body.error).toBe(null)
+
+        // tests
+        const projectIssues = res.body.data.map((issue) => issue.handlingTeam);
+
+        expect(projectIssues[0][0].username).toBe("testDev1")
+
+        expect(projectIssues[1][0].username).toBe("testDev1")
+        expect(projectIssues[1][1].username).toBe("testDev2")
     })
 });
