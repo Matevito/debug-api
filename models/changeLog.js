@@ -11,7 +11,7 @@ const changeLogSchema = mongoose.Schema({
     user: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
     oldValue: { type: String, required: true },
     newValue: { type: String, required: true },
-    date: { type: Date, default: Date.now() }
+    date: { type: Date, default: Date.now }
 });
 
 // format date with the hour
