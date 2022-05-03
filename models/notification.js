@@ -15,7 +15,7 @@ const notificationSchema = mongoose.Schema({
     message: { type: String, required: true },
     ref: { type:String, required: true },
     value: { type: mongoose.Schema.ObjectId, required: true },
-    date: { type: Date, default: DateTime.now() },
+    date: { type: Date, default: Date.now() },
 });
 
 const  Notification = mongoose.model("Notification", notificationSchema);

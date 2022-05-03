@@ -23,7 +23,7 @@ const issueSchema = mongoose.Schema({
     handlingTeam: [{
         type: mongoose.Schema.ObjectId, ref:"User"
     }],
-    date: { type: Date, default: DateTime.now() },
+    date: { type: Date, default: Date.now() },
     screenshots: [{
         type: String
     }] 
