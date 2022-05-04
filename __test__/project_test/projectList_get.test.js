@@ -6,7 +6,8 @@ if (process.env.NODE_ENV !== 'production') require("dotenv").config();
 
 const request = require("supertest");
 const testDB = require("../mongoConfigTesting");
-const userList = require("../userList").get_users
+const userList = require("../userList").get_users;
+const Issue = require("../../models/issue");
 
 jest.setTimeout(30000)
 
@@ -131,7 +132,78 @@ describe("GET project/list tests", () => {
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data.length).toEqual(2)
-        expect(res.body.data[0].title).toEqual("proj1")
-        expect(res.body.data[1].title).toEqual("proj2")
-    })
+        expect(res.body.data[0].project.title).toEqual("proj1");
+        expect(res.body.data[1].project.title).toEqual("proj2");
+        expect(res.body.data[1].issues).toBe(0)
+        expect(res.body.data[1].solvedIssues).toBe(0)
+    });
+    test("user gets ticket data of projects sent", async() => {
+        // set up issues
+        const projList = await Project.find({})
+        const issues = [
+            new Issue({
+                project: projList[0]._id,
+                title: "a title",
+                description: "a description",
+                priority: "low",
+                type: "feature req",
+                handlingTeam: [],
+                screenshots: [],
+                status: "solved",
+            }),
+            new Issue({
+                project: projList[1]._id,
+                title: "a title",
+                description: "a description",
+                priority: "low",
+                type: "feature req",
+                handlingTeam: [],
+                screenshots: [],
+                status: "open",
+            }),
+            new Issue({
+                project: projList[1]._id,
+                title: "a title",
+                description: "a description",
+                priority: "low",
+                type: "feature req",
+                handlingTeam: [],
+                screenshots: [],
+                status: "open",
+            })
+        ]
+        issues.forEach(async(issue) => {
+            await issue.save()
+        })
+        //make api call
+        const users = await userList();
+        let adminToken = await request(app)
+            .post("/log-in")
+            .type("form")
+            .send({
+                username: users[0].username,
+                password: users[0].password
+            })
+        adminToken = adminToken.body.token
+
+        // test
+        //test
+        let res = await request(app)
+            .get("/project/list")
+            .set('Accept', 'application/json')
+            .set({"auth-token": adminToken})
+        
+        expect(res.status).toBe(200)
+        const resData = res.body.data
+        expect(resData.length).toBe(3)
+
+        expect(resData[0].issues).toBe(1);
+        expect(resData[0].solvedIssues).toBe(1)
+
+        expect(resData[1].issues).toBe(2);
+        expect(resData[1].solvedIssues).toBe(0)
+
+        expect(resData[2].issues).toBe(0);
+        expect(resData[2].solvedIssues).toBe(0)
+    });
 })

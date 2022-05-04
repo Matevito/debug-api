@@ -203,10 +203,23 @@ exports.projectList_get = async (req, res) => {
             return projObj.team.includes(req.user.id)
         })
     };
-
+    // get isssues data of the projects;
+    const projectsData = await Promise.all(
+        projectList.map(async(project) => {
+            const projectIssues = await Issue.find({project: project._id});
+            
+            const response =  {
+                project,
+                issues: projectIssues.length,
+                solvedIssues: projectIssues.filter(proj => proj.status === "solved").length
+            }
+            return response
+        })
+    )
+    
     res.json({
         error: null,
         msg: "Successfully send project data",
-        data: projectList
+        data: projectsData
     })
 }
