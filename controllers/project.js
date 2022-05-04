@@ -208,11 +208,16 @@ exports.projectList_get = async (req, res) => {
         projectList.map(async(project) => {
             const projectIssues = await Issue.find({project: project._id});
             
-            const response =  {
-                project,
-                issues: projectIssues.length,
-                solvedIssues: projectIssues.filter(proj => proj.status === "solved").length
+            let response = {
+                _id: project._id,
+                title: project.title,
+                description: project.description,
+                team: project.team,
+                teamLeader: project.teamLeader
             }
+            response.issues = projectIssues.length,
+            response.solvedIssues = projectIssues.filter(proj => proj.status === "solved").length
+            
             return response
         })
     )

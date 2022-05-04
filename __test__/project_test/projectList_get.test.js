@@ -132,8 +132,8 @@ describe("GET project/list tests", () => {
         expect(res.status).toEqual(200)
         expect(res.body.error).toEqual(null)
         expect(res.body.data.length).toEqual(2)
-        expect(res.body.data[0].project.title).toEqual("proj1");
-        expect(res.body.data[1].project.title).toEqual("proj2");
+        expect(res.body.data[0].title).toEqual("proj1");
+        expect(res.body.data[1].title).toEqual("proj2");
         expect(res.body.data[1].issues).toBe(0)
         expect(res.body.data[1].solvedIssues).toBe(0)
     });
