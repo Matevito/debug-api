@@ -76,5 +76,8 @@ describe("GET /user/:id", () => {
         expect(res.body.data.projects.list.length).toBe(1);
         expect(res.body.data.issues.list.length).toBe(0)
         expect(res.body.data.user.password).toBe(undefined)
+        // check if projects parse number of tickets related
+        expect(res.body.data.projects.list[0].issues).toBe(3);
+        expect(res.body.data.projects.list[0].solvedIssues).toBe(0)
     });
 })

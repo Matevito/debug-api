@@ -45,9 +45,26 @@ exports.user_get = async(req, res) => {
             error: "User data not found on db"
         })
     }
-    const userProjects = projectsOnDB.filter((proj) => {
+    let userProjects = projectsOnDB.filter((proj) => {
         return proj.team.includes(req.params.id)
     });
+    userProjects = await Promise.all(
+        userProjects.map(async(project) => {
+            const projectIssues = await Issue.find({ project: project._id });
+            let response = {
+                _id: project._id,
+                title: project.title,
+                description: project.description,
+                team: project.team,
+                teamLeader: project.teamLeader
+            }
+            response.issues = projectIssues.length,
+            response.solvedIssues = projectIssues.filter(proj => proj.status === "solved").length
+            
+            return response
+        })
+    )
+
     // user issues info
     const issuesOnDB = await Issue.find({});
     if (!issuesOnDB) {
