@@ -142,6 +142,3 @@ As it's quite evident, these controllers are meant to be used only when a projec
 The reason of this consist in that all this routes user the */log-in* controller and use a middleware to set its authentication values. Certainly a more secure way to handle these demos is having a separate controller to handle the authentication so feel free to do it if you want to.
 ## Contact
 You can find me easily writing me an email to madiazt@unal.edu.co or sending me a message to my [git-hub account](https://github.com/Matevito).
-
-debugReadme.md
-Mostrando blogReadme.md.
