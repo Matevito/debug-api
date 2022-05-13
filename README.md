@@ -1,32 +1,3 @@
-
-Conversación abierta. 2 mensajes. Todos los mensajes leídos.
-
-Ir al contenido
-Uso de Correo de Universidad Nacional de Colombia con lectores de pantalla
-1 de 452
-documentacion de apis
-Mateo Andres Diaz Torres <madiazt@unal.edu.co>
-	
-Adjuntos10 may 2022, 20:27 (hace 2 días)
-	
-para madiaztpython
-
-2 archivos adjuntos
-Mateo Andres Diaz Torres <madiazt@unal.edu.co>
-	
-Adjuntos19:14 (hace 15 minutos)
-	
-para madiaztpython
-
-
-El mar, 10 may 2022 a las 20:27, Mateo Andres Diaz Torres (<madiazt@unal.edu.co>) escribió:
-
-
-2 archivos adjuntos
-	
-	
-	
-
 # Issue-tracker API
 As this project name states, *Issue-tracker API* is a rest API that can handle basic functions of an issue tracker (ticket system, call it as you prefer it). It can be used in small teams to develop and handle multiple projects. The idea behind building this app was to get to know more this common tool used often in real software developer teams.
 
